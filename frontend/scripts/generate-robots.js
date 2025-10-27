@@ -1,19 +1,19 @@
 /**
- * Robots.txt Generator Script for Origin by the Sea
- * 
+ * Robots.txt Generator Script for Origins by the Sea
+ *
  * This script generates a robots.txt file to guide search engine crawlers.
  */
 
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
 // Get current filename and directory
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Website URL
-const SITE_URL = 'https://originsbythesea.com';
+const SITE_URL = "https://originsbythesea.com";
 
 // Generate robots.txt content
 const robotsTxt = `User-agent: *
@@ -44,7 +44,7 @@ Host: ${SITE_URL}
 `;
 
 // Define output path
-const outputPath = path.resolve(__dirname, '../public/robots.txt');
+const outputPath = path.resolve(__dirname, "../public/robots.txt");
 
 // Write robots.txt to file
 fs.writeFileSync(outputPath, robotsTxt);

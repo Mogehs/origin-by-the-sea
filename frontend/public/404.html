@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redirecting... | Origin By The Sea</title>
+    <title>Redirecting... | Origins By The Sea</title>
     <script>
         // Capture the current URL path
         var pathSegments = window.location.pathname.split('/');
         var baseURL = window.location.origin;
-        
+
         // Redirect to the root with the current path as a hash fragment
         // This will allow React Router to handle the routing
         window.location.replace(baseURL + '/#' + window.location.pathname);
-        
+
         // As a fallback, redirect to the homepage after a short delay
-        setTimeout(function() {
+        setTimeout(function () {
             window.location.replace(baseURL);
         }, 1000);
     </script>
@@ -32,15 +33,18 @@
             background-color: #f8f0e5;
             color: #333;
         }
+
         h1 {
             font-family: 'Italiana', serif;
             margin-bottom: 20px;
             color: #e6994b;
         }
+
         .logo {
             max-width: 200px;
             margin-bottom: 30px;
         }
+
         .loader {
             border: 5px solid #f3f3f3;
             border-top: 5px solid #e6994b;
@@ -50,16 +54,24 @@
             animation: spin 1s linear infinite;
             margin: 20px auto;
         }
+
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
     </style>
 </head>
+
 <body>
-    <img src="/images/logo.png" alt="Origin by the Sea" class="logo">
+    <img src="/images/logo.png" alt="Origins by the Sea" class="logo">
     <h1>Redirecting you...</h1>
     <div class="loader"></div>
     <p>If you are not redirected automatically, <a href="/">click here</a> to go to the homepage.</p>
 </body>
+
 </html>

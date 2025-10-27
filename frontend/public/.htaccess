@@ -1,4 +1,4 @@
-# Origin by the Sea - cPanel Root .htaccess
+# Origins by the Sea - cPanel Root .htaccess
 
 # Enable Rewriting
 RewriteEngine On

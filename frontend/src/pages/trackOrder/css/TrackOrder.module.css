@@ -37,18 +37,22 @@
 }
 
 .viewAllOrdersBtn {
-  background: #e6994b;
+  background: linear-gradient(135deg, #e6994b 0%, #d78a3f 50%, #c97a35 100%);
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  font-weight: 500;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(230, 153, 75, 0.3);
 }
 
 .viewAllOrdersBtn:hover {
-  background: #d88a3a;
+  background: linear-gradient(135deg, #d78a3f 0%, #c97a35 50%, #b86b2b 100%);
+  box-shadow: 0 4px 12px rgba(230, 153, 75, 0.4);
+  transform: translateY(-1px);
 }
 
 .trackForm {
@@ -57,45 +61,59 @@
 
 .inputGroup {
   display: flex;
+  align-items: center;
   gap: 10px;
   margin-bottom: 10px;
 }
 
 .orderInput {
   flex: 1;
-  padding: 12px 15px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+  padding: 12px 18px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
   font-size: 16px;
-  transition: border-color 0.2s ease;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  height: 48px;
+  box-sizing: border-box;
 }
 
 .orderInput:focus {
   outline: none;
   border-color: #e6994b;
+  box-shadow: 0 0 0 3px rgba(230, 153, 75, 0.1);
 }
 
 .trackButton {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  background: #e6994b;
+  background: linear-gradient(135deg, #e6994b 0%, #d78a3f 50%, #c97a35 100%);
   color: white;
   border: none;
-  padding: 12px 25px;
-  border-radius: 6px;
-  font-weight: 500;
+  padding: 0 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(230, 153, 75, 0.3);
+  height: 48px;
+  box-sizing: border-box;
 }
 
-.trackButton:hover {
-  background: #d88a3a;
+.trackButton:hover:not(:disabled) {
+  background: linear-gradient(135deg, #d78a3f 0%, #c97a35 50%, #b86b2b 100%);
+  box-shadow: 0 4px 12px rgba(230, 153, 75, 0.4);
+  transform: translateY(-1px);
 }
 
 .trackButton:disabled {
-  background: #ccc;
+  background: #d1d5db;
   cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
 }
 
 .spinner {
@@ -129,6 +147,64 @@
   font-weight: 600;
   color: #2c3e50;
   margin-bottom: 20px;
+}
+
+.orderIdSection {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #ffffff;
+  padding: 16px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 2px solid #e5e7eb;
+}
+
+.orderIdLabel {
+  font-weight: 600;
+  color: #4b5563;
+  font-size: 15px;
+}
+
+.orderId {
+  font-family: "Courier New", monospace;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+  letter-spacing: 0.5px;
+}
+
+.copyButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #e6994b 0%, #d78a3f 100%);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-left: auto;
+  box-shadow: 0 2px 6px rgba(230, 153, 75, 0.25);
+  min-height: 36px;
+  gap: 6px;
+}
+
+.copyButton:hover {
+  background: linear-gradient(135deg, #d78a3f 0%, #c97a35 100%);
+  box-shadow: 0 3px 10px rgba(230, 153, 75, 0.35);
+  transform: translateY(-1px);
+}
+
+.copyButton:active {
+  transform: translateY(0);
+}
+
+.copyButton svg {
+  font-size: 14px;
 }
 
 .orderInfo {
@@ -203,6 +279,62 @@
   margin: 0;
 }
 
+.shippingSection {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+}
+
+.shippingSection h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0 0 15px 0;
+}
+
+.addressInfo p {
+  margin: 5px 0;
+  color: #5d6778;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 15px;
+  margin-top: 25px;
+  flex-wrap: wrap;
+}
+
+.continueShoppingBtn {
+  flex: 1;
+  min-width: 200px;
+  background: #ffffff;
+  color: #e6994b;
+  border: 2px solid #e6994b;
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 50px;
+}
+
+.continueShoppingBtn:hover {
+  background: #e6994b;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(230, 153, 75, 0.3);
+  transform: translateY(-1px);
+}
+
+.actionButtons .viewAllOrdersBtn {
+  flex: 1;
+  min-width: 200px;
+  min-height: 50px;
+}
+
 @media (max-width: 768px) {
   .container {
     padding: 20px;
@@ -223,5 +355,24 @@
   .trackButton {
     width: 100%;
     justify-content: center;
+  }
+
+  .orderIdSection {
+    flex-wrap: wrap;
+  }
+
+  .copyButton {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .actionButtons {
+    flex-direction: column;
+  }
+
+  .continueShoppingBtn,
+  .actionButtons .viewAllOrdersBtn {
+    width: 100%;
+    min-width: unset;
   }
 }

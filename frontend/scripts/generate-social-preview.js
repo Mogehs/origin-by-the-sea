@@ -1,9 +1,9 @@
 /**
- * Social Media Preview Generator for Origin by the Sea
- * 
+ * Social Media Preview Generator for Origins by the Sea
+ *
  * This script creates an HTML template that displays a preview of what your
  * website will look like when shared on social media platforms.
- * 
+ *
  * To use this:
  * 1. Run this script
  * 2. Open the generated HTML file in a browser
@@ -11,9 +11,9 @@
  * 4. Save as og-image.jpg in the public/images directory
  */
 
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
 // Get current filename and directory
 const __filename = fileURLToPath(import.meta.url);
@@ -146,8 +146,8 @@ const htmlTemplate = `<!DOCTYPE html>
   <div class="preview-container">
     <div class="accent-overlay"></div>
     <div class="accent-overlay-2"></div>
-    <img src="../public/images/logo.png" alt="Origin by the Sea Logo" class="logo">
-    <h1>Origin By The Sea</h1>
+    <img src="../public/images/logo.png" alt="Origins by the Sea Logo" class="logo">
+    <h1>Origins By The Sea</h1>
     <p class="tagline">Handcrafted with love, <span class="highlight">inspired by the sea</span></p>
     <p class="website">originsbythesea.com</p>
   </div>
@@ -155,10 +155,12 @@ const htmlTemplate = `<!DOCTYPE html>
 </html>`;
 
 // Define output path
-const outputPath = path.resolve(__dirname, '../public/social-preview.html');
+const outputPath = path.resolve(__dirname, "../public/social-preview.html");
 
 // Write HTML to file
 fs.writeFileSync(outputPath, htmlTemplate);
 
 console.log(`Social media preview template generated at ${outputPath}`);
-console.log('Open this file in your browser and take a screenshot to create your OG image.');
+console.log(
+  "Open this file in your browser and take a screenshot to create your OG image."
+);

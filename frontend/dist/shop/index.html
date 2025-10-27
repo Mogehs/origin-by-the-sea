@@ -1,76 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <!-- Primary Meta Tags -->
-    <title>Origin By The Sea | Shop</title>
-    <meta name="title" content="Origin By The Sea | Handcrafted Sustainable Fashion" />
-    <meta name="description" content="Discover elegantly handcrafted swimwear, dresses, and accessories inspired by the sea. Sustainable, ethical fashion designed with passion and purpose." />
-    <meta name="keywords" content="origin by the sea, swimwear, handmade dresses, sustainable fashion, ethical clothing, beach wear, crop tops, waterproof jewelry" />
-    <meta name="author" content="Origin By The Sea" />
 
-    <!-- Favicon and Apple Touch Icons -->
-    <link rel="icon" type="image/svg+xml" href="/images/origin-by-the-sea.svg" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/images/origin-by-the-sea.svg" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/images/origin-by-the-sea.svg" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/images/origin-by-the-sea.svg" />
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://originsbythesea.com/" />
-    <meta property="og:title" content="Origin By The Sea | Handcrafted Sustainable Fashion" />
-    <meta property="og:description" content="Discover elegantly handcrafted swimwear, dresses, and accessories inspired by the sea. Sustainable, ethical fashion designed with passion and purpose." />
-    <meta property="og:image" content="https://originsbythesea.com/images/hero-banner.jpg" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://originsbythesea.com/" />
-    <meta property="twitter:title" content="Origin By The Sea | Handcrafted Sustainable Fashion" />
-    <meta property="twitter:description" content="Discover elegantly handcrafted swimwear, dresses, and accessories inspired by the sea. Sustainable, ethical fashion designed with passion and purpose." />
-    
-    <!-- Fix for product detail routes -->
-    <script>
-      (function() {
-        // Fix hash in product URLs
-        if (window.location.pathname.includes('/product/') && window.location.hash) {
-          const productId = window.location.hash.substring(1);
-          if (productId) {
-            // Replace the URL without the hash
-            window.history.replaceState(
-              {}, 
-              document.title, 
-              '/product?=id' + productId
-            );
-          }
+  <!-- Primary Meta Tags -->
+  <title>Origins By The Sea | Shop</title>
+  <meta name="title" content="Origins By The Sea | Handcrafted Sustainable Fashion" />
+  <meta name="description"
+    content="Discover unique, handcrafted sustainable fashion. Shop eco-friendly swimwear, handmade dresses, crop tops, and waterproof jewelry. Ethical clothing made with love." />
+  <meta name="keywords"
+    content="origins by the sea, swimwear, handmade dresses, sustainable fashion, ethical clothing, beach wear, crop tops, waterproof jewelry" />
+  <meta name="author" content="Origins By The Sea" /> <!-- Favicon and Apple Touch Icons -->
+  <link rel="icon" type="image/svg+xml" href="/images/origin-by-the-sea.svg" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/origin-by-the-sea.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/origin-by-the-sea.svg" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/origin-by-the-sea.svg" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://originsbythesea.com/" />
+  <meta property="og:title" content="Origins By The Sea | Handcrafted Sustainable Fashion" />
+  <meta property="og:description"
+    content="Discover elegantly handcrafted swimwear, dresses, and accessories inspired by the sea. Sustainable, ethical fashion designed with passion and purpose." />
+  <meta property="og:image" content="https://originsbythesea.com/images/hero-banner.jpg" />
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://originsbythesea.com/" />
+  <meta property="twitter:title" content="Origins By The Sea | Handcrafted Sustainable Fashion" />
+  <meta property="twitter:description"
+    content="Discover elegantly handcrafted swimwear, dresses, and accessories inspired by the sea. Sustainable, ethical fashion designed with passion and purpose." />
+
+  <!-- Fix for product detail routes -->
+  <script>
+    (function () {
+      // Fix hash in product URLs
+      if (window.location.pathname.includes('/product/') && window.location.hash) {
+        const productId = window.location.hash.substring(1);
+        if (productId) {
+          // Replace the URL without the hash
+          window.history.replaceState(
+            {},
+            document.title,
+            '/product?=id' + productId
+          );
         }
-      })();
-    </script>
-    <meta property="twitter:image" content="https://originsbythesea.com/images/hero-banner.jpg" />
-    
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://originsbythesea.com/" />
+      }
+    })();
+  </script>
+  <meta property="twitter:image" content="https://originsbythesea.com/images/hero-banner.jpg" />
 
-    <!-- Mobile Theme Color -->
-    <meta name="theme-color" content="#e6994b" />
-    
-    <!-- Additional SEO Meta Tags -->
-    <meta name="robots" content="index, follow" />
-    <meta name="googlebot" content="index, follow" />
-    <meta name="revisit-after" content="7 days" />
-    <meta name="geo.region" content="AE" />
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://originsbythesea.com/" />
 
-    <!-- Preconnect to important domains to speed up loading -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    
-    <!-- Structured Data for Organization -->
-    <script type="application/ld+json">
+  <!-- Mobile Theme Color -->
+  <meta name="theme-color" content="#e6994b" />
+
+  <!-- Additional SEO Meta Tags -->
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow" />
+  <meta name="revisit-after" content="7 days" />
+  <meta name="geo.region" content="AE" />
+
+  <!-- Preconnect to important domains to speed up loading -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Structured Data for Organization -->
+  <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "Organization",
-        "name": "Origin By The Sea",
+        "name": "Origins By The Sea",
         "url": "https://originsbythesea.com",
         "logo": "https://originsbythesea.com/images/logo.png",
         "sameAs": [
@@ -84,14 +87,14 @@
         }
       }
     </script>
-    
-    <!-- Structured Data for Website -->
-    <script type="application/ld+json">
+
+  <!-- Structured Data for Website -->
+  <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "WebSite",
         "url": "https://originsbythesea.com",
-        "name": "Origin By The Sea",
+        "name": "Origins By The Sea",
         "description": "Handcrafted sustainable fashion inspired by the ocean",
         "potentialAction": {
           "@type": "SearchAction",
@@ -100,17 +103,19 @@
         }
       }
     </script>
-    <script type="module" crossorigin src="/assets/main-gTKqQ2bH.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/main-B3iuWtHP.css">
-  </head>
-  <body>
-    <div id="root"></div>
-    <noscript>
-      <div style="padding: 20px; text-align: center; font-family: Arial, sans-serif;">
-        <h1>Origin By The Sea</h1>
-        <p>Please enable JavaScript to experience our handcrafted sustainable fashion store.</p>
-        <p>We offer beautiful swimwear, dresses, and accessories inspired by the ocean.</p>
-      </div>
-    </noscript>
-  </body>
+  <script type="module" crossorigin src="/assets/main-DT4Hljyn.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/main-C77CkcXa.css">
+</head>
+
+<body>
+  <div id="root"></div>
+  <noscript>
+    <div style="padding: 20px; text-align: center; font-family: Arial, sans-serif;">
+      <h1>Origins By The Sea</h1>
+      <p>Please enable JavaScript to experience our handcrafted sustainable fashion store.</p>
+      <p>We offer beautiful swimwear, dresses, and accessories inspired by the ocean.</p>
+    </div>
+  </noscript>
+</body>
+
 </html>

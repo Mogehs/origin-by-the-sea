@@ -1,7 +1,7 @@
 {
   "name": "origin-by-the-sea-backend",
   "version": "1.0.0",
-  "description": "Backend server for Origin by the Sea",
+  "description": "Backend server for Origins by the Sea",
   "main": "lambda.js",
   "scripts": {
     "start": "node server.js",

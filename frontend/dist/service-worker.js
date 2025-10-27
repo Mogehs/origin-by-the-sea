@@ -1,13 +1,13 @@
 // Service worker for caching images
-const CACHE_NAME = 'origin-by-the-sea-image-cache-v1';
-const IMAGE_CACHE_NAME = 'origin-by-the-sea-images-v1';
-const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'];
+const CACHE_NAME = "origin-by-the-sea-image-cache-v1";
+const IMAGE_CACHE_NAME = "origin-by-the-sea-images-v1";
+const IMAGE_EXTENSIONS = [".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg"];
 
 // Install event - pre-cache critical assets
-self.addEventListener('install', (event) => {
+self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(['/images/placeholder.jpg', '/images/logo.png']);
+      return cache.addAll(["/images/placeholder.jpg", "/images/logo.png"]);
     })
   );
   // Skip waiting so the service worker activates immediately
@@ -15,7 +15,7 @@ self.addEventListener('install', (event) => {
 });
 
 // Activate event - clean up old caches
-self.addEventListener('activate', (event) => {
+self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
@@ -30,8 +30,11 @@ self.addEventListener('activate', (event) => {
 });
 
 // Fetch event - cache images with a stale-while-revalidate strategy
-self.addEventListener('fetch', (event) => {
-  const url = new URL(event.request.url);
+self.addEventListener("fetch", (event) => {
+  // Only handle GET requests (POST, PUT, DELETE cannot be cached)
+  if (event.request.method !== "GET") {
+    return;
+  }
 
   // Handle image requests
   if (isImageRequest(event.request)) {
@@ -64,7 +67,7 @@ self.addEventListener('fetch', (event) => {
 
 // Helper function to determine if a request is for an image
 function isImageRequest(request) {
-  if (request.method !== 'GET') return false;
+  if (request.method !== "GET") return false;
 
   const url = new URL(request.url);
 
@@ -76,20 +79,20 @@ function isImageRequest(request) {
   // Check if it's a request for an image in our domain
   const isInternalImage =
     url.hostname === self.location.hostname &&
-    (url.pathname.startsWith('/images/') || hasImageExtension);
+    (url.pathname.startsWith("/images/") || hasImageExtension);
 
   // Check for external images that we want to cache (e.g., from CDNs)
   const isFirebaseStorage = url.hostname.includes(
-    'firebasestorage.googleapis.com'
+    "firebasestorage.googleapis.com"
   );
   const isExternalImage =
     hasImageExtension &&
-    (url.hostname.includes('cloudfront.net') ||
-      url.hostname.includes('storage.googleapis.com') ||
+    (url.hostname.includes("cloudfront.net") ||
+      url.hostname.includes("storage.googleapis.com") ||
       isFirebaseStorage);
 
   // For Firebase Storage URLs, check if they have the proper token
-  if (isFirebaseStorage && !url.search.includes('token=')) {
+  if (isFirebaseStorage && !url.search.includes("token=")) {
     return false;
   }
 
@@ -113,7 +116,7 @@ async function handleImageRequest(request) {
       return networkResponse;
     })
     .catch((error) => {
-      console.error('Error fetching image:', error);
+      console.error("Error fetching image:", error);
       return null;
     });
 
@@ -134,12 +137,12 @@ async function handleImageRequest(request) {
   }
 
   // If all else fails, return a fallback image
-  return await caches.match('/images/placeholder.jpg');
+  return await caches.match("/images/placeholder.jpg");
 }
 
 // Listen for messages from the client
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'CACHE_IMAGES') {
+self.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "CACHE_IMAGES") {
     cacheImages(event.data.images);
   }
 });
@@ -161,7 +164,7 @@ async function cacheImages(imageUrls) {
         try {
           // Check if image is already cached
           if (!(await cache.match(url))) {
-            const response = await fetch(url, { mode: 'no-cors' });
+            const response = await fetch(url, { mode: "no-cors" });
             if (response) {
               await cache.put(url, response);
             }

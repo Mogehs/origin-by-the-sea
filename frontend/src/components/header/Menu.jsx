@@ -1,14 +1,14 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { AiOutlineClose } from 'react-icons/ai';
-import styles from './css/Menu.module.css';
+import { Link, useNavigate } from "react-router-dom";
+import { AiOutlineClose } from "react-icons/ai";
+import styles from "./css/Menu.module.css";
 
 const menuItems = [
-  { name: 'Dresses', path: '/shop?id=3' ,category: ''},
-  { name: 'Swimwear', path: '/shop?id=1' ,category: ''},
-  { name: 'Crop Top', path: '/shop?id=2' ,category: ''},
-  { name: 'Shop', path: '/shop', category: '' },
-  { name: 'About', path: '/about', category: '' },
-  { name: 'Favorites', path: '/favorites', category: '' },
+  { name: "Dresses", path: "/shop?id=3", category: "" },
+  { name: "Swimwear", path: "/shop?id=1", category: "" },
+  { name: "Crop Top", path: "/shop?id=2", category: "" },
+  { name: "Shop", path: "/shop", category: "" },
+  { name: "About", path: "/about", category: "" },
+  { name: "Favorites", path: "/favorites", category: "" },
 ];
 
 const Menu = ({ isOpen, toggleMenu }) => {
@@ -29,7 +29,7 @@ const Menu = ({ isOpen, toggleMenu }) => {
         <div className={styles.menuHeader}>
           {/* Logo */}
           <Link
-            to='/'
+            to="/"
             onClick={() => {
               toggleMenu();
               window.scrollTo(0, 0);
@@ -37,8 +37,8 @@ const Menu = ({ isOpen, toggleMenu }) => {
           >
             <img
               className={styles.menuLogo}
-              src='/images/logo.png'
-              alt='Origin by the Sea'
+              src="/images/logo.png"
+              alt="Origins by the Sea"
             />
           </Link>
 

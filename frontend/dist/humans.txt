@@ -1,5 +1,5 @@
 /* TEAM */
-    Creator: Origin by the Sea Team
+    Creator: Origins by the Sea Team
     Contact: contact@originsbythesea.com
     Location: United Arab Emirates
     

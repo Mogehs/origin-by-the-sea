@@ -1,4 +1,4 @@
-import styles from './css/BrandIntroSection.module.css';
+import styles from "./css/BrandIntroSection.module.css";
 
 const BrandIntroSection = () => {
   return (
@@ -6,11 +6,11 @@ const BrandIntroSection = () => {
       <div className={styles.overlay}>
         <div className={styles.content}>
           <h1>
-            <span className={styles.highlight}>Origin by the Sea</span> - Where
+            <span className={styles.highlight}>Origins by the Sea</span> - Where
             Craftsmanship Meets Elegance
           </h1>
           <p className={styles.description}>
-            At Origin by the Sea, we celebrate craftsmanship, sustainability,
+            At Origins by the Sea, we celebrate craftsmanship, sustainability,
             and timeless style. Inspired by the ocean’s beauty, our handmade
             swimwear, crop tops, dresses, waterproof jewelry, and artisanal
             accessories are designed for every occasion.
