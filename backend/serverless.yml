@@ -1,0 +1,75 @@
+service: origin-by-the-sea-backend
+
+frameworkVersion: "3"
+
+useDotenv: true
+
+# Package configuration - exclude unnecessary files from deployment
+package:
+  patterns:
+    - "!.aws-sam/**"
+    - "!.serverless/**"
+    - "!.git/**"
+    - "!.vscode/**"
+    - "!.idea/**"
+    - "!node_modules/.cache/**"
+    - "!*.md"
+    - "!.env.example"
+    - "!.gitignore"
+    - "!README*.md"
+    - "!AWS_*.md"
+    - "!DEPLOYMENT_*.md"
+    - "!GETTING_*.md"
+    - "!SCRIPTS_*.md"
+    - "!TROUBLESHOOTING*.md"
+    - "!vercel.json"
+    - "!nodemon.json"
+    - "!.editorconfig"
+    - "!server.js"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'us-east-1'}
+  memorySize: 512
+  timeout: 30
+
+  environment:
+    NODE_ENV: production
+    STRIPE_SECRET_KEY: ${env:STRIPE_SECRET_KEY}
+    STRIPE_WEBHOOK_SECRET: ${env:STRIPE_WEBHOOK_SECRET}
+    FRONTEND_URL: ${env:FRONTEND_URL}
+    DEFAULT_CURRENCY: ${env:DEFAULT_CURRENCY, 'aed'}
+    FIREBASE_SERVICE_ACCOUNT: ${env:FIREBASE_SERVICE_ACCOUNT, ''}
+
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+          Resource: "*"
+
+functions:
+  api:
+    handler: lambda.handler
+    events:
+      - http:
+          path: /
+          method: ANY
+          integration: lambda-proxy
+      - http:
+          path: /{proxy+}
+          method: ANY
+          integration: lambda-proxy
+
+plugins:
+  - serverless-dotenv-plugin
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    httpPort: 3001

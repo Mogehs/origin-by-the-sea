@@ -1,0 +1,7 @@
+.productContainer {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+/* If we need to add more styles specific to the SingleProduct page in the future, they will go here */

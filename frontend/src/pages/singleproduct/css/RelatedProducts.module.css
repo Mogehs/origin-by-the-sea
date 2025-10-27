@@ -1,0 +1,111 @@
+.relatedProductsContainer {
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 90%;
+  padding: 50px 0px;
+}
+
+.relatedProductsTitle {
+  font-family: 'Italiana', sans-serif;
+  text-transform: capitalize;
+  font-size: 2.5rem;
+  font-weight: 400;
+  margin: 50px 0px;
+  text-align: center;
+}
+
+.relatedProducts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+/* Fix for few items to not stretch across full width */
+.relatedProducts > div {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Adjustments for image spacing */
+.relatedProducts img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumbnailContainer {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
+}
+
+.thumbnail {
+  margin: 0;
+  padding: 0;
+}
+
+/* Shimmer loading effect */
+.shimmerCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+  width: 100%;
+  background-color: #fff;
+}
+
+.shimmerImage {
+  width: 100%;
+  height: 260px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmerAnimation 1.5s infinite linear;
+  margin-bottom: 10px;
+}
+
+.shimmerTitle {
+  width: 80%;
+  height: 20px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmerAnimation 1.5s infinite linear;
+  margin-bottom: 8px;
+}
+
+.shimmerPrice {
+  width: 40%;
+  height: 16px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmerAnimation 1.5s infinite linear;
+}
+
+@keyframes shimmerAnimation {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .shimmerImage {
+    height: 200px;
+  }
+  
+  .relatedProducts {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .shimmerImage {
+    height: 180px;
+  }
+  
+  .relatedProducts {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}

@@ -1,0 +1,591 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Italiana&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+.italiana-regular {
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Hellix';
+  src: url('/assets/fonts/Hellix-Thin.woff2') format('woff2'),
+    url('/assets/fonts/Hellix-Thin.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Hellix';
+  src: url('/assets/fonts/Hellix-ThinItalic.woff2') format('woff2'),
+    url('/assets/fonts/Hellix-ThinItalic.ttf') format('truetype');
+  font-weight: 100;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Hellix';
+  src: url('/assets/fonts/Hellix-Light.woff2') format('woff2'),
+    url('/assets/fonts/Hellix-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Hellix';
+  src: url('/assets/fonts/Hellix-LightItalic.woff2') format('woff2'),
+    url('/assets/fonts/Hellix-LightItalic.ttf') format('truetype');
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Hellix';
+  src: url('/assets/fonts/Hellix-Regular.woff2') format('woff2'),
+    url('/assets/fonts/Hellix-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Hellix';
+  src: url('/assets/fonts/Hellix-RegularItalic.woff2') format('woff2'),
+    url('/assets/fonts/Hellix-RegularItalic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Hellix';
+  src: url('/assets/fonts/Hellix-Medium.woff2') format('woff2'),
+    url('/assets/fonts/Hellix-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Hellix';
+  src: url('/assets/fonts/Hellix-MediumItalic.woff2') format('woff2'),
+    url('/assets/fonts/Hellix-MediumItalic.ttf') format('truetype');
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Hellix';
+  src: url('/assets/fonts/Hellix-SemiBold.woff2') format('woff2'),
+    url('/assets/fonts/Hellix-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Hellix';
+  src: url('/assets/fonts/Hellix-SemiBoldItalic.woff2') format('woff2'),
+    url('/assets/fonts/Hellix-SemiBoldItalic.ttf') format('truetype');
+  font-weight: 600;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Hellix';
+  src: url('/assets/fonts/Hellix-Bold.woff2') format('woff2'),
+    url('/assets/fonts/Hellix-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Hellix';
+  src: url('/assets/fonts/Hellix-BoldItalic.woff2') format('woff2'),
+    url('/assets/fonts/Hellix-BoldItalic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Hellix';
+  src: url('/assets/fonts/Hellix-ExtraBold.woff2') format('woff2'),
+    url('/assets/fonts/Hellix-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Hellix';
+  src: url('/assets/fonts/Hellix-ExtraBoldItalic.woff2') format('woff2'),
+    url('/assets/fonts/Hellix-ExtraBoldItalic.ttf') format('truetype');
+  font-weight: 800;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Hellix';
+  src: url('/assets/fonts/Hellix-Black.woff2') format('woff2'),
+    url('/assets/fonts/Hellix-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Hellix';
+  src: url('/assets/fonts/Hellix-BlackItalic.woff2') format('woff2'),
+    url('/assets/fonts/Hellix-BlackItalic.ttf') format('truetype');
+  font-weight: 900;
+  font-style: italic;
+}
+
+*,
+:root,
+::after,
+::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+button,
+input,
+textarea,
+label,
+li {
+  font-family: Hellix;
+  font-weight: 400;
+} */
+
+@import url('https://fonts.googleapis.com/css2?family=Italiana&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+/* Hellix Font Faces */
+@font-face {
+  font-family: 'Hellix';
+  src: url('/assets/fonts/Hellix-Thin.woff2') format('woff2'),
+    url('/assets/fonts/Hellix-Thin.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Hellix';
+  src: url('/assets/fonts/Hellix-ThinItalic.woff2') format('woff2'),
+    url('/assets/fonts/Hellix-ThinItalic.ttf') format('truetype');
+  font-weight: 100;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Hellix';
+  src: url('/assets/fonts/Hellix-Light.woff2') format('woff2'),
+    url('/assets/fonts/Hellix-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Hellix';
+  src: url('/assets/fonts/Hellix-LightItalic.woff2') format('woff2'),
+    url('/assets/fonts/Hellix-LightItalic.ttf') format('truetype');
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Hellix';
+  src: url('/assets/fonts/Hellix-Regular.woff2') format('woff2'),
+    url('/assets/fonts/Hellix-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Hellix';
+  src: url('/assets/fonts/Hellix-RegularItalic.woff2') format('woff2'),
+    url('/assets/fonts/Hellix-RegularItalic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Hellix';
+  src: url('/assets/fonts/Hellix-Medium.woff2') format('woff2'),
+    url('/assets/fonts/Hellix-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Hellix';
+  src: url('/assets/fonts/Hellix-MediumItalic.woff2') format('woff2'),
+    url('/assets/fonts/Hellix-MediumItalic.ttf') format('truetype');
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Hellix';
+  src: url('/assets/fonts/Hellix-SemiBold.woff2') format('woff2'),
+    url('/assets/fonts/Hellix-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Hellix';
+  src: url('/assets/fonts/Hellix-SemiBoldItalic.woff2') format('woff2'),
+    url('/assets/fonts/Hellix-SemiBoldItalic.ttf') format('truetype');
+  font-weight: 600;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Hellix';
+  src: url('/assets/fonts/Hellix-Bold.woff2') format('woff2'),
+    url('/assets/fonts/Hellix-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Hellix';
+  src: url('/assets/fonts/Hellix-BoldItalic.woff2') format('woff2'),
+    url('/assets/fonts/Hellix-BoldItalic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Hellix';
+  src: url('/assets/fonts/Hellix-ExtraBold.woff2') format('woff2'),
+    url('/assets/fonts/Hellix-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Hellix';
+  src: url('/assets/fonts/Hellix-ExtraBoldItalic.woff2') format('woff2'),
+    url('/assets/fonts/Hellix-ExtraBoldItalic.ttf') format('truetype');
+  font-weight: 800;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Hellix';
+  src: url('/assets/fonts/Hellix-Black.woff2') format('woff2'),
+    url('/assets/fonts/Hellix-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Hellix';
+  src: url('/assets/fonts/Hellix-BlackItalic.woff2') format('woff2'),
+    url('/assets/fonts/Hellix-BlackItalic.ttf') format('truetype');
+  font-weight: 900;
+  font-style: italic;
+}
+
+/* Reset and Global Styles */
+*,
+:root,
+::after,
+::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Apply Hellix font globally */
+body,
+p,
+h3,
+h4,
+h5,
+h6,
+button,
+input,
+textarea,
+label,
+li {
+  font-family: 'Hellix', sans-serif !important;
+  font-weight: 400;
+}
+
+h1,
+h2 {
+  font-family: 'Italiana', sans-serif !important;
+  font-weight: 400;
+}
+
+/* html {
+  font-size: 62.5%;
+}
+body {
+  font-size: 1.6rem;
+} */
+
+/* Add these styles for react-toastify */
+.Toastify__toast-container {
+  z-index: 9999 !important;
+  width: auto !important;
+  min-width: 320px !important;
+  max-width: 420px !important;
+}
+
+.Toastify__toast {
+  min-height: 64px;
+  margin-bottom: 1rem;
+  border-radius: 8px !important;
+  overflow: hidden;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Custom toast styles with #E6994B color */
+.Toastify__toast--success {
+  background: linear-gradient(135deg, #e6994b, #ffb84d) !important;
+  color: white !important;
+  border: none !important;
+}
+
+.Toastify__toast--error {
+  background: white !important;
+  color: #333 !important;
+  border-left: 4px solid #e6994b !important;
+}
+
+.Toastify__toast--info {
+  background: rgba(230, 153, 75, 0.08) !important;
+  color: #333 !important;
+  border: 1px solid rgba(230, 153, 75, 0.3) !important;
+}
+
+.Toastify__progress-bar {
+  background: linear-gradient(to right, #e6994b, #ffb84d) !important;
+  height: 3px !important;
+}
+
+/* Additional custom styling */
+.custom-toast {
+  font-family: 'Hellix', sans-serif !important;
+  padding: 16px !important;
+  font-size: 14px !important;
+  letter-spacing: 0.2px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.Toastify__toast-body {
+  font-family: 'Hellix', sans-serif !important;
+  font-weight: 500 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  line-height: 1.5 !important;
+}
+
+.Toastify__toast-icon {
+  width: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 50% !important;
+  margin-right: 16px !important;
+  flex-shrink: 0 !important;
+}
+
+.Toastify__toast--success .Toastify__toast-icon {
+  background-color: rgba(255, 255, 255, 0.25) !important;
+  color: white !important;
+  font-weight: bold !important;
+  font-size: 16px !important;
+}
+
+.Toastify__toast--error .Toastify__toast-icon {
+  background-color: #e6994b !important;
+  color: white !important;
+  font-weight: bold !important;
+  font-size: 16px !important;
+}
+
+.Toastify__toast--info .Toastify__toast-icon {
+  background-color: rgba(230, 153, 75, 0.15) !important;
+  color: #e6994b !important;
+  font-weight: bold !important;
+  font-size: 16px !important;
+}
+
+.Toastify__close-button {
+  color: inherit !important;
+  opacity: 0.7 !important;
+  padding: 0 !important;
+}
+
+.Toastify__close-button:hover {
+  opacity: 1 !important;
+}
+
+/* Reset and Base Styles */
+*,
+:root,
+::after,
+::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Responsive Typography System */
+:root {
+  /* Base font sizes for different screen sizes */
+  --font-size-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem); /* 16px - 18px */
+
+  /* Heading Sizes - fluid between mobile and desktop */
+  --font-size-h1: clamp(2rem, 1.3rem + 3.5vw, 3.75rem); /* 32px - 60px */
+  --font-size-h2: clamp(1.75rem, 1.2rem + 2.5vw, 3rem); /* 28px - 48px */
+  --font-size-h3: clamp(1.5rem, 1.1rem + 1.8vw, 2.25rem); /* 24px - 36px */
+  --font-size-h4: clamp(1.25rem, 1rem + 1.2vw, 1.75rem); /* 20px - 28px */
+  --font-size-h5: clamp(1.125rem, 1rem + 0.6vw, 1.5rem); /* 18px - 24px */
+  --font-size-h6: clamp(1rem, 0.95rem + 0.25vw, 1.125rem); /* 16px - 18px */
+
+  /* Other text sizes */
+  --font-size-small: clamp(
+    0.875rem,
+    0.85rem + 0.1vw,
+    0.9375rem
+  ); /* 14px - 15px */
+  --font-size-large: clamp(1.125rem, 1rem + 0.6vw, 1.375rem); /* 18px - 22px */
+
+  /* Line heights */
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.5;
+  --line-height-loose: 1.7;
+}
+
+body {
+  font-family: 'Hellix', sans-serif;
+  font-weight: 400;
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  color: #333;
+}
+
+/* Typography Styles */
+h1,
+.h1 {
+  font-family: 'Italiana', serif;
+  font-size: var(--font-size-h1);
+  line-height: var(--line-height-tight);
+  margin-bottom: 0.5em;
+}
+
+h2,
+.h2 {
+  font-family: 'Italiana', serif;
+  font-size: var(--font-size-h2);
+  line-height: var(--line-height-tight);
+  margin-bottom: 0.5em;
+}
+
+h3,
+.h3 {
+  font-size: var(--font-size-h3);
+  line-height: var(--line-height-tight);
+  margin-bottom: 0.5em;
+}
+
+h4,
+.h4 {
+  font-size: var(--font-size-h4);
+  line-height: var(--line-height-tight);
+  margin-bottom: 0.5em;
+}
+
+h5,
+.h5 {
+  font-size: var(--font-size-h5);
+  line-height: var(--line-height-tight);
+  margin-bottom: 0.5em;
+}
+
+h6,
+.h6 {
+  font-size: var(--font-size-h6);
+  line-height: var(--line-height-tight);
+  margin-bottom: 0.5em;
+}
+
+p {
+  font-size: var(--font-size-base);
+  margin-bottom: 1em;
+  line-height: var(--line-height-normal);
+}
+
+.text-small {
+  font-size: var(--font-size-small);
+}
+
+.text-large {
+  font-size: var(--font-size-large);
+}
+
+/* Product Card Text */
+.productName {
+  font-size: var(--font-size-h6);
+  font-weight: 500;
+}
+
+.productPrice {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+}
+
+/* Mobile Specific Overrides */
+@media (max-width: 576px) {
+  body,
+  p,
+  input,
+  button,
+  textarea,
+  select,
+  label {
+    line-height: var(--line-height-loose);
+  }
+
+  h1,
+  .h1,
+  h2,
+  .h2 {
+    word-wrap: break-word;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+}
+
+/* Utility classes */
+.text-center {
+  text-align: center;
+}
+
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+.font-light {
+  font-weight: 300;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+/* Preserve existing toast styles */
+/* ... existing toast styles ... */

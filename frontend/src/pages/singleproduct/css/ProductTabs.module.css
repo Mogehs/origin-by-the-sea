@@ -1,0 +1,98 @@
+.productTabs {
+  width: 90%;
+  max-width: 1280px;
+  margin: auto;
+  font-family: 'Hellix', sans-serif;
+}
+
+.tabButtons {
+  display: flex;
+  gap: clamp(5px, 1vw, 10px);
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.tabButtons button {
+  padding-bottom: 10px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: var(--font-size-base, 1rem);
+  font-weight: 600;
+  color: #555;
+  transition: color 0.3s, border-color 0.3s;
+  border: 2px solid transparent;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.tabButtons button.active {
+  color: black;
+  border-bottom: 2px solid black;
+}
+
+.tabContent {
+  padding: 20px 0;
+}
+
+.collapsed {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+}
+
+.expanded {
+  max-height: none;
+  white-space: normal;
+}
+
+.tabContent p {
+  margin: 0;
+  font-size: var(--font-size-base, 1rem);
+  line-height: var(--line-height-normal, 1.5);
+  letter-spacing: 0.015em;
+  position: relative;
+}
+
+.collapsed::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+  display: block;
+  margin-top: 20px;
+}
+
+.fadeEffect {
+  position: relative;
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.fadeEffect button {
+  font-size: var(--font-size-base, 1rem);
+  background: none;
+  border: none;
+  color: #000;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-block;
+  transition: color 0.3s;
+  margin-right: 10px;
+  border-bottom: 2px solid transparent;
+  padding: 0;
+}
+
+.tabTitle {
+  font-family: 'Italiana', sans-serif !important;
+  font-weight: 400;
+  font-size: var(--font-size-h2, clamp(1.75rem, 1.2rem + 2.5vw, 2.5rem));
+  margin: 15px 0px;
+}

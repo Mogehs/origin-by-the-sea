@@ -1,0 +1,87 @@
+.container {
+    width: 100%;
+    margin: 20px 0;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.methodsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.methodCard {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    background-color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.methodCard:hover {
+    border-color: #bdbdbd;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.methodCard.selected {
+    border-color: #e6994b;
+    background-color: #fef6ed;
+}
+
+.methodIcon {
+    font-size: 24px;
+    margin-right: 15px;
+}
+
+.methodInfo {
+    flex: 1;
+}
+
+.methodName {
+    font-weight: 500;
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 3px;
+}
+
+.methodDescription {
+    font-size: 14px;
+    color: #757575;
+}
+
+.methodRadio {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.radio {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #bdbdbd;
+    border-radius: 50%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.selected .radio {
+    border-color: #e6994b;
+}
+
+.radioSelected {
+    width: 10px;
+    height: 10px;
+    background-color: #e6994b;
+    border-radius: 50%;
+}

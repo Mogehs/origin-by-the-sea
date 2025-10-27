@@ -1,0 +1,257 @@
+.hero {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 200px); /* Adjust height based on header */
+  overflow: hidden;
+}
+
+.heroVideo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  z-index: 0;
+  display: block; /* Ensure proper display */
+  min-width: 100%; /* Ensure it covers the width */
+  min-height: 100%; /* Ensure it covers the height */
+  opacity: 0;
+  animation: fadeIn 1s ease-in forwards;
+}
+
+.heroImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  z-index: -1; /* Place behind video so it only shows if video fails */
+  display: none; /* Hide by default, will show if video fails via JS fallback */
+  opacity: 0;
+  animation: fadeIn 1s ease-in forwards;
+}
+
+.heroOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  opacity: 0;
+  animation: fadeIn 0.8s ease-in forwards;
+}
+
+.heroContent {
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #f9f9f9;
+  z-index: 2;
+  width: 90%;
+  max-width: 1200px;
+  opacity: 0;
+  animation: fadeInUp 1s ease-out 0.3s forwards;
+}
+
+.heroContent h1 {
+  font-size: var(--font-size-h1, clamp(2rem, 1.3rem + 3.5vw, 3.75rem));
+  font-weight: 600;
+  margin-bottom: clamp(15px, 2vw, 30px);
+  color: #f9f9f9;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.shopNowButton {
+  display: inline-block;
+  padding: clamp(8px, 1.5vw, 12px) clamp(16px, 2.5vw, 24px);
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: var(--font-size-large, clamp(1.125rem, 1rem + 0.6vw, 1.5rem));
+  transition: background-color 0.3s, color 0.3s;
+  background-color: transparent;
+  backdrop-filter: blur(0.5px);
+  border: 2px solid white;
+  cursor: pointer;
+  width: clamp(200px, 30vw, 300px);
+  max-width: 321px;
+  text-align: center;
+}
+
+.shopNowButton:hover {
+  background-color: white;
+  color: black;
+}
+
+@media (max-width: 1024px) {
+  .heroContent {
+    top: 70%;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    height: calc(100vh - 80px);
+  }
+
+  .heroContent {
+    top: 65%;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    height: calc(100vh - 60px);
+  }
+
+  .heroContent {
+    top: 60%;
+  }
+}
+
+/* Loading Shimmer Effect */
+.loading {
+  width: 100%;
+  height: calc(100vh - 200px);
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6));
+}
+
+.shimmerWrapper {
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(15px, 2vw, 30px);
+  z-index: 2;
+}
+
+.shimmerBg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(90deg, 
+      transparent 0%,
+      rgba(255, 255, 255, 0.08) 50%,
+      transparent 100%
+    );
+  background-size: 200% 100%;
+  animation: shimmer 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.shimmerTitle {
+  width: clamp(300px, 80%, 800px);
+  height: clamp(40px, 5vh, 60px);
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(4px);
+}
+
+.shimmerButton {
+  width: clamp(200px, 30vw, 300px);
+  height: clamp(45px, 6vh, 55px);
+  background: rgba(255, 255, 255, 0.08);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(4px);
+}
+
+.shimmerTitle::after,
+.shimmerButton::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 100%
+  );
+  animation: shimmerElement 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes shimmerElement {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+@media (max-width: 1024px) {
+  .shimmerWrapper {
+    top: 70%;
+  }
+}
+
+@media (max-width: 768px) {
+  .loading {
+    height: calc(100vh - 80px);
+  }
+  .shimmerWrapper {
+    top: 65%;
+  }
+}
+
+@media (max-width: 480px) {
+  .loading {
+    height: calc(100vh - 60px);
+  }
+  .shimmerWrapper {
+    top: 60%;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -45%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}

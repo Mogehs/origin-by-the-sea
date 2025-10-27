@@ -1,0 +1,32 @@
+/* Add these styles to the end of the file */
+
+/* Style for categories with no products */
+.emptyCategory {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.emptyCategory input[type='checkbox'] {
+  cursor: not-allowed;
+}
+
+.noProductsLabel {
+  margin-left: 8px;
+  font-size: 0.75rem;
+  color: #999;
+  font-style: italic;
+}
+
+/* Style for clickable category links */
+.categoryLink {
+  padding: 8px 0;
+  cursor: pointer;
+  color: #333;
+  transition: color 0.2s, transform 0.2s;
+  display: block;
+}
+
+.categoryLink:hover {
+  color: #E6994B;
+  transform: translateX(4px);
+}

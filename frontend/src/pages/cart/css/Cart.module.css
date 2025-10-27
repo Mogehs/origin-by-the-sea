@@ -1,0 +1,10 @@
+.cartTitle {
+  text-align: center;
+  padding-top: 30px;
+  margin: 20px 0;
+  font-size: 40px;
+  font-weight: 400;
+  font-family: 'italiana', sans-serif;
+  color: #000000;
+  text-transform: capitalize;
+}

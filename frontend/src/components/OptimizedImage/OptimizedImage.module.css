@@ -1,0 +1,125 @@
+.imageWrapper {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: auto;
+  background-color: #f0f0f0;
+}
+
+.optimizedImage {
+  width: 100%;
+  height: 100%;
+  display: block;
+  transition: opacity 0.5s ease, filter 0.5s ease;
+}
+
+.placeholderImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.blurredImage {
+  filter: blur(10px);
+  transform: scale(1.05);
+  opacity: 0.7;
+}
+
+.loadedImage {
+  opacity: 1;
+  filter: blur(0);
+  z-index: 2;
+  position: relative;
+}
+
+.loadingOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.4);
+  z-index: 3;
+}
+
+/* Shimmer effect */
+.shimmer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    rgba(240, 240, 240, 0.1) 0%, 
+    rgba(240, 240, 240, 0.5) 50%, 
+    rgba(240, 240, 240, 0.1) 100%);
+  background-size: 200% 100%;
+  animation: shimmerAnimation 1.5s infinite linear;
+  z-index: 2;
+}
+
+@keyframes shimmerAnimation {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #1a5f7a;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Hide alt text during loading */
+.hiddenAlt {
+  font-size: 0;
+  color: transparent;
+  user-select: none;
+}
+
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Animation for fade-in effect */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Media query for small screens */
+@media (max-width: 768px) {
+  .spinner {
+    width: 20px;
+    height: 20px;
+    border-width: 2px;
+  }
+}

@@ -1,0 +1,84 @@
+.showcase {
+  text-align: center;
+  padding: 20px 0px;
+  background: #fff;
+  max-width: 1280px;
+  margin: 0 auto;
+  /* border: black solid 2px; */
+
+}
+
+.heading {
+  font-size: 2.5rem;
+  font-family: 'Italiana', sans-serif;
+  text-transform: capitalize;
+  text-align: start;
+  font-weight: 400;
+  margin-bottom: 40px;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  justify-content: center;
+  max-width: 1200px;
+}
+
+.card {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
+.image {
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.3s ease-in-out;
+}
+
+.card:hover .image {
+  transform: scale(1.05);
+}
+
+.playIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-size: 1.8rem;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.viewAll:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .gallery {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+
+  .heading {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+
+  .heading {
+    font-size: 1.5rem;
+  }
+}

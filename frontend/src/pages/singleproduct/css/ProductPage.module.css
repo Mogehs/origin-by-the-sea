@@ -1,0 +1,512 @@
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 40px 0px;
+    max-width: 1280px;
+    margin: 0 auto;
+    width: 90%;
+}
+
+.imageSection {
+    width: 49%;
+    display: flex;
+    flex: 1;
+    gap: 10px;
+    flex-direction: row;
+}
+
+.detailsSection {
+    width: 49%;
+    max-width: 500px;
+    padding-top: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.mainImageContainer {
+    width: 100%;
+    /* max-height: 600px; */
+    position: relative;
+    overflow: hidden;
+    height: auto;
+}
+
+.mainImage {
+    width: 100%;
+    height: 100%;
+    object-fit: fill !important;
+}
+
+.slideControlButton {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    background: rgba(255, 255, 255, 0.7);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background 0.3s;
+    z-index: 10;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.slideControlButton:hover {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.thumbnailContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 10px;
+    overflow-y: auto;
+    padding-right: 5px;
+    overflow-x: hidden;
+    max-height: 600px;
+    min-width: 80px;
+    height: fit-content;
+}
+
+.thumbnail {
+    width: 100%;
+    height: 100px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.3s, border 0.3s;
+    object-fit: cover;
+    margin: 0;
+    padding: 0;
+}
+
+.thumbnail.active,
+.thumbnail:hover {
+    opacity: 1;
+    border: 2px solid #000;
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: 400;
+    font-family: 'italiana', sans-serif;
+    margin-bottom: 15px;
+    align-self: flex-start;
+    text-align: left;
+}
+
+.price {
+    color: #e6994b;
+    font-size: 2rem;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+.optionGroup p {
+    /* margin-bottom: 10px; */
+    font-weight: 300;
+    font-size: 1.2rem;
+    font-family: 'hellix', sans-serif;
+}
+
+.sizes {
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+}
+
+.sizes button,
+.colorButton {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    margin: 5px;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+    background: #f0f0f0;
+    transition: background 0.3s, border 0.3s;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.colorTooltip {
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 10;
+}
+
+.colorButton:hover .colorTooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+.colors {
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+}
+
+.sizeButton.selected,
+.colorButton.selected {
+    border: 2px solid #000;
+    background: #e0e0e0;
+}
+
+.quantitySelector {
+    display: flex;
+    align-items: center;
+}
+
+.quantitySelector button {
+    padding: 5px 10px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    background: #f0f0f0;
+    border: none;
+    transition: background 0.3s;
+}
+
+.quantitySelector span {
+    margin: 0 10px;
+    font-size: 1.2rem;
+}
+
+.actionButtons button {
+    width: 100%;
+    padding: 15px;
+    margin-top: 10px;
+    cursor: pointer;
+    border: none;
+    font-size: 1rem;
+    transition: background 0.3s;
+}
+
+.addToCart {
+    background-color: #f3f3f3;
+    color: #000;
+}
+
+.addToCart:hover {
+    background-color: #e6994b;
+}
+
+.buyNow {
+    background-color: #e6994b;
+    color: #fff;
+}
+
+.buyNow:hover {
+    background-color: #e08800;
+}
+
+.directCheckout {
+    background-color: #333;
+    color: #fff;
+    margin-top: 15px;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+.directCheckout:hover {
+    background-color: #000;
+}
+
+.carouselOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.carouselImage {
+    max-height: 90vh;
+    width: auto !important;
+    max-width: 100%;
+    object-fit: contain;
+    border-radius: 0;
+    margin: 0 auto;
+    display: block;
+    background: transparent;
+    box-shadow: none;
+    border: none;
+}
+
+.carouselImageContainer {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background-color: transparent;
+    height: 100%;
+    padding: 0 60px; /* Add padding for nav buttons */
+    box-shadow: none;
+    border: none;
+}
+
+.closeButton {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1001;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+}
+
+.navButton {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    z-index: 1001;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+}
+
+.prevButton {
+    left: 20px;
+}
+
+.nextButton {
+    right: 20px;
+}
+
+.closeButton:hover,
+.navButton:hover {
+    opacity: 0.8;
+}
+
+@media (max-width: 1024px) {
+    .imageSection {
+        flex: 1;
+    }
+    .mainImageContainer {
+        width: 100%;
+        /* height: auto; */
+    }
+    .title {
+        font-size: 1.6rem;
+        text-align: left;
+    }
+    .thumbnail {
+        height: 80px;
+    }
+    .price {
+        font-size: 1.4rem;
+    }
+}
+
+@media (max-width: 800px) {
+    .container {
+        flex-direction: column;
+        padding: 20px 0;
+    }
+    .imageSection,
+    .detailsSection {
+        width: 100%;
+        max-width: 100%;
+    }
+    .imageSection {
+        flex-direction: column-reverse;
+        align-items: center;
+    }
+    .thumbnailContainer {
+        width: 100%;
+        flex-direction: row;
+        justify-content: center;
+        margin-top: 15px;
+        padding-right: 0;
+    }
+    .thumbnail {
+        width: 60px;
+        height: 80px;
+    }
+    .mainImageContainer {
+        width: 100%;
+        max-width: 500px;
+    }
+    .title {
+        font-size: 1.8rem;
+        text-align: left;
+    }
+    .price {
+        font-size: 1.5rem;
+    }
+    .sizes button,
+    .colorButton {
+        width: 35px;
+        height: 35px;
+    }
+    .quantitySelector button,
+    .quantitySelector span {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .optionGroup p {
+        font-size: 0.9rem;
+    }
+    .quantitySelector button,
+    .quantitySelector span {
+        font-size: 0.9rem;
+    }
+    .actionButtons button {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+}
+
+.imageZoom {
+    cursor: crosshair !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+}
+
+.enlargedImage {
+    border: 1px solid #e38a00 !important;
+    border-radius: 4px !important;
+    z-index: 999 !important;
+    background-color: white !important;
+}
+
+.magnifierGlass {
+    display: none;
+}
+
+.magnifiedImage {
+    display: none;
+}
+
+.quantitySelector button:hover {
+    background-color: #e6994b;
+    color: #fff;
+}
+
+.magnifyImage {
+    border: 1px solid #e6994b !important;
+}
+
+
+/* Make sure shimmer effects take full height/width */
+
+.shimmer {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmerAnimation 1.5s infinite linear;
+}
+
+@keyframes shimmerAnimation {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+
+/* Error container */
+
+.errorContainer {
+    width: 100%;
+    padding: 40px;
+    text-align: center;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.errorContainer h2 {
+    font-size: 24px;
+    margin-bottom: 16px;
+    color: #e53935;
+}
+
+.errorContainer p {
+    font-size: 16px;
+    margin-bottom: 24px;
+    color: #555;
+}
+
+.backButton {
+    padding: 12px 24px;
+    background-color: #E6994B;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.backButton:hover {
+    background-color: #d78c3f;
+}
+
+.favoriteButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 8px;
+    padding: 12px;
+    margin-top: 15px;
+    cursor: pointer;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    background-color: white;
+    color: #333;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.favoriteButton:hover {
+    background-color: #f8f9fa;
+    border-color: #ccc;
+}
+
+.favoriteButton span {
+    font-size: 14px;
+    letter-spacing: 0.5px;
+}

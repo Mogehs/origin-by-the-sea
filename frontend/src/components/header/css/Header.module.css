@@ -1,0 +1,331 @@
+.container {
+    padding: 10px 0;
+    background-color: #f9f9f9;
+    position: relative;
+    z-index: 50;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.navbarContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+.logoContainer {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+}
+
+.logo {
+    height: 50px;
+    align-self: center;
+}
+
+.searchContainer {
+    display: flex;
+    gap: 42px;
+    align-items: start;
+    flex: 1;
+}
+
+.searchIcon {
+    cursor: pointer;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-self: start;
+}
+
+.searchForm {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    animation: slideDown 0.3s ease forwards;
+    position: relative;
+    background-color: white;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.searchInput {
+    flex: 1;
+    padding: 10px 15px;
+    font-family: 'Hellix', sans-serif;
+    font-size: 16px;
+    background: white;
+    transition: all 0.3s ease;
+    color: #000;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    outline: none;
+    border: none;
+    border-radius: 0;
+    border-bottom: 2px solid #333;
+    background-color: white;
+    caret-color: #333;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+}
+
+.searchInput::placeholder {
+    color: #999;
+    font-weight: 300;
+}
+
+.closeSearchBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    margin-left: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+    transition: color 0.2s ease;
+    border-radius: 50%;
+}
+
+.closeSearchBtn:hover {
+    color: #000;
+    background-color: #f5f5f5;
+}
+
+.loginIcon {
+    cursor: pointer;
+    display: block;
+    text-decoration: none;
+    color: #000;
+}
+
+.cartIcon {
+    cursor: pointer;
+    display: block;
+    text-decoration: none;
+    color: #000;
+}
+
+.menuButton {
+    cursor: pointer;
+    display: none;
+}
+
+.navList {
+    height: 100%;
+    align-self: end;
+    display: flex;
+    gap: 20px;
+    list-style: none;
+    align-items: center;
+    /* border: 1px solid red; */
+}
+
+.navItem {
+    list-style: none;
+}
+
+.navLink {
+    font-size: 18px;
+    color: #000;
+    text-decoration: none;
+    font-family: 'Hellix', sans-serif;
+}
+
+.navLink {
+    font-size: 18px;
+    color: #000;
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+    font-family: 'Hellix', sans-serif;
+}
+
+.navLink:hover {
+    color: #e6994b;
+    /* Hover color */
+}
+
+.activeNavLink {
+    color: #e6994b !important;
+    font-weight: bold;
+    font-family: 'Hellix', sans-serif;
+}
+
+.navLink {
+    font-size: 18px;
+    color: #000;
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+}
+
+.navLink:hover {
+    color: #e6994b;
+}
+
+.activeLink {
+    color: #e6994b !important;
+}
+
+.cartIcon:hover {
+    color: #e6994b;
+}
+
+.favoriteIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: color 0.2s;
+    margin-right: 15px;
+}
+
+.favoriteIcon:hover {
+    color: #e6994b;
+}
+
+
+/* Medium to Large Screens */
+
+@media (min-width: 769px) and (max-width: 1200px) {
+    .searchInput {
+        width: 300px;
+    }
+    .navbarContainer {
+        padding: 0 15px;
+    }
+    .searchContainer {
+        gap: 30px;
+    }
+}
+
+
+/* Small Screens and Mobile */
+
+@media (max-width: 768px) {
+    .menuButton {
+        display: block;
+        order: 3;
+        flex: 0 0 auto;
+    }
+    .navList {
+        display: none;
+    }
+    .container {
+        height: 70px;
+        position: relative;
+    }
+    .logoContainer {
+        order: 2;
+        flex: 1;
+        display: flex;
+        justify-content: center;
+    }
+    .logo {
+        height: 40px;
+        display: none;
+    }
+    .navbarContainer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 15px;
+        border: none;
+        height: 100%;
+    }
+    .searchContainer {
+        order: 1;
+        display: flex;
+        gap: 15px;
+        flex: 0 0 auto;
+        justify-content: flex-start;
+        border: none;
+        width: auto;
+        position: relative;
+        height: 100%;
+    }
+    .searchForm {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        padding: 0 15px;
+        height: 70px;
+        width: 100%;
+        z-index: 200;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        animation: fadeIn 0.2s ease-in-out;
+    }
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    .searchInput {
+        height: 50px;
+        padding: 0 15px;
+        font-size: 16px;
+        color: #000;
+        background-color: white;
+        width: 90%;
+        box-sizing: border-box;
+        opacity: 1;
+        visibility: visible;
+        border-bottom: 1px solid #ccc;
+        margin: 10px 0;
+        font-weight: 400;
+    }
+    .closeSearchBtn {
+        padding: 8px;
+        margin-left: 10px;
+        flex-shrink: 0;
+        background-color: #f5f5f5;
+        border-radius: 50%;
+        color: #333;
+        min-width: 36px;
+        min-height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+
+/* Extra Small Screens */
+
+@media (max-width: 480px) {
+    .searchContainer {
+        gap: 10px;
+    }
+    .menuButton {
+        padding-left: 0;
+    }
+    .searchInput {
+        font-size: 16px;
+        height: 40px;
+    }
+    .searchForm {
+        padding: 0 10px;
+    }
+}

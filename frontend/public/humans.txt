@@ -1,0 +1,11 @@
+/* TEAM */
+    Creator: Origin by the Sea Team
+    Contact: contact@originsbythesea.com
+    Location: United Arab Emirates
+    
+/* SITE */
+    Last update: 2025/06/04
+    Standards: HTML5, CSS3, JavaScript, React
+    Components: React, Redux, Firebase, Stripe
+    Software: Visual Studio Code, Adobe XD
+    Language: English

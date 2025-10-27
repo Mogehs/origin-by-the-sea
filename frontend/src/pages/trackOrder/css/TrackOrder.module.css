@@ -1,0 +1,227 @@
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.trackOrderBox {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+  padding: 30px;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.guestMessage,
+.authenticatedMessage {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.guestMessage p,
+.authenticatedMessage p {
+  color: #5d6778;
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 0 0 15px 0;
+}
+
+.viewAllOrdersBtn {
+  background: #e6994b;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.viewAllOrdersBtn:hover {
+  background: #d88a3a;
+}
+
+.trackForm {
+  margin-bottom: 30px;
+}
+
+.inputGroup {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.orderInput {
+  flex: 1;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: border-color 0.2s ease;
+}
+
+.orderInput:focus {
+  outline: none;
+  border-color: #e6994b;
+}
+
+.trackButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #e6994b;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.trackButton:hover {
+  background: #d88a3a;
+}
+
+.trackButton:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.error {
+  color: #e53935;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.orderDetails {
+  background: #f8f9fa;
+  padding: 25px;
+  border-radius: 8px;
+  margin-top: 30px;
+}
+
+.orderDetails h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+.orderInfo {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+}
+
+.orderInfo p {
+  margin: 10px 0;
+  color: #5d6778;
+  font-size: 16px;
+}
+
+.status {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.productsList {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.product {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.productImage {
+  width: 70px;
+  height: 70px;
+  border-radius: 8px;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.productDetails {
+  flex: 1;
+}
+
+.productTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0 0 5px 0;
+}
+
+.productVariants {
+  font-size: 14px;
+  color: #5d6778;
+  margin: 0 0 5px 0;
+}
+
+.productPrice {
+  font-size: 15px;
+  font-weight: 600;
+  color: #e6994b;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 20px;
+  }
+
+  .trackOrderBox {
+    padding: 20px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .inputGroup {
+    flex-direction: column;
+  }
+
+  .trackButton {
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -1,0 +1,25 @@
+User-agent: *
+Allow: /
+
+# Disallow pages that shouldn't be indexed
+Disallow: /cart
+Disallow: /buy
+Disallow: /order-success
+Disallow: /account
+Disallow: /login
+Disallow: /signup
+Disallow: /forgot-password
+Disallow: /404
+
+# Allow product pages and collections to be indexed
+Allow: /shop
+Allow: /shop/*
+Allow: /about
+Allow: /privacy-policy
+Allow: /terms-and-conditions
+
+# Point to sitemap
+Sitemap: https://originsbythesea.com/sitemap.xml
+
+# Point to humans.txt
+Host: https://originsbythesea.com

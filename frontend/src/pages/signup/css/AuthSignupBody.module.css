@@ -1,0 +1,79 @@
+.authForm {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 468px;
+  max-width: 90%;
+  margin: 0 auto;
+}
+
+.authTiltle {
+  text-align: center;
+  margin: 20px 0;
+  font-size: 40px;
+  font-weight: 400;
+  font-family: 'italiana-regular';
+  color: #000000;
+  align-self: start;
+  text-transform: capitalize;
+}
+
+.authFormInputContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.authFormInput {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 17px;
+  font-weight: 300;
+  color: #000000;
+  height: 53px;
+  width: 100%;
+  box-sizing: border-box;
+  outline: none;
+}
+.authFormInput:focus {
+  outline: none;
+  border-color: #e6994b;
+}
+
+.forgotPassword {
+  font-size: 15px;
+  font-weight: 300;
+  color: #000000;
+  text-align: right;
+  text-decoration: none;
+  text-transform: capitalize;
+  cursor: pointer;
+  width: 100%;
+}
+
+.registerBtn {
+  background-color: #e6994b;
+  color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 24px;
+  font-weight: 400;
+  height: 53px;
+  width: 100%;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  margin-bottom: 30px;
+}
+
+.registerBtn:hover {
+  background-color: #da6200;
+  transform: translateY(-1px);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.submitButton {
+  background-color: #e6994b;
+  color: #fff;
+}

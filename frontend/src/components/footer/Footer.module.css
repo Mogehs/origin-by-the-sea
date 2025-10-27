@@ -1,0 +1,159 @@
+.footerContainer {
+  background-color: #2f261c;
+  padding: 50px 0;
+  margin-top: 50px;
+  color: #ffffff;
+}
+
+.footer {
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 50px;
+}
+
+.footerTitle {
+  font-size: 1.2rem;
+  color: #e6994b;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+ul {
+  padding: 0;
+}
+
+ul li {
+  list-style-type: none;
+  margin-bottom: 15px;
+}
+
+.quickLinks,
+.contactInfo {
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #ffffff;
+}
+
+.quickLink {
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 400;
+  transition: 0.3s;
+}
+
+.quickLink:hover {
+  text-decoration: underline;
+}
+
+/* Get in Touch */
+.getInTouch {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.inputContainer input {
+  font-size: 16px;
+  background-color: transparent;
+  color: #ffffff;
+  border: none;
+  border-bottom: 2px solid #ffffff80;
+  padding: 8px;
+  outline: none;
+  border-radius: 0px;
+  margin-bottom: 20px;
+}
+
+.subscribeButton {
+  max-width: 220px;
+  padding: 10px 20px;
+  color: #ffffff;
+  border: 2px solid #ffffff80;
+  background-color: transparent;
+  font-size: 1rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.subscribeButton:hover {
+  background-color: #e6994b;
+  color: #2f261c;
+}
+
+/* Social Media */
+.socialMedia {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.socialIcons {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  margin-top: 10px;
+  justify-content: space-between;
+}
+
+.icon {
+  cursor: pointer;
+  transition: 0.3s;
+  padding: 10px;
+  border-radius: 50%;
+  background-color: #fff;
+  color: transparent;
+  color: #2f261c;
+}
+
+.icon:hover {
+  color: #e6994b;
+}
+
+.footerDivider {
+  width: 50%;
+  margin: 0 auto;
+  height: 2px;
+  background-color: #ffffff80;
+  margin-top: 30px;
+}
+/* Bottom Text */
+.bottomText {
+  margin-top: 20px;
+  font-size: 14px;
+  text-align: center;
+  padding-top: 10px;
+}
+
+.company{
+  font-size: 12px;
+  color: #ffffff80;
+  margin-top: 10px;
+  text-align: center;
+  
+}
+
+
+@media (max-width: 768px) {
+  .footer {
+    justify-content: center;
+  }
+}
+
