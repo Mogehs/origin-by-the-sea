@@ -161,7 +161,7 @@ class PaymentController {
           const failedPayment = event.data.object;
           await orderService.updateOrderStatus(
             failedPayment.metadata.orderId,
-            "payment_failed",
+            "failed",
             failedPayment
           );
           break;
