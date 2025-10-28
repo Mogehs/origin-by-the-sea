@@ -87,7 +87,7 @@ class OrderService {
       }
 
       await orderRef.update({
-        status,
+        paymentStatus: status,
         updatedAt: admin.firestore.FieldValue.serverTimestamp(),
         paymentData: paymentData || null,
       });
@@ -162,7 +162,7 @@ class OrderService {
         refundAmount === fullAmount ? "refunded" : "partially_refunded";
 
       await orderRef.update({
-        status: refundStatus,
+        paymentStatus: refundStatus,
         refundId,
         refundAmount,
         updatedAt: admin.firestore.FieldValue.serverTimestamp(),
@@ -201,7 +201,7 @@ class OrderService {
           : "partially_refunded";
 
       await orderDoc.ref.update({
-        status: refundStatus,
+        paymentStatus: refundStatus,
         refundAmount: refundData.amount_refunded,
         updatedAt: admin.firestore.FieldValue.serverTimestamp(),
       });
