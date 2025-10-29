@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import styles from './css/CartProduct.module.css';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useState, useEffect } from "react";
+import styles from "./css/CartProduct.module.css";
+import { useSelector, useDispatch } from "react-redux";
 import {
   clearCart,
   clearSelectedCart,
   removeFromCart,
   updateQuantity,
-} from '../../features/product/cartSlice'; // Adjust the import path if needed
-import { FaShoppingCart, FaPlus, FaMinus } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
-import { IoIosDesktop } from 'react-icons/io';
-import { addToSelectedCart } from '../../features/product/cartSlice';
-import OptimizedImage from '../../components/OptimizedImage/OptimizedImage';
-import { useImageCache } from '../../context/ImageCacheContext';
+} from "../../features/product/cartSlice"; // Adjust the import path if needed
+import { FaShoppingCart, FaPlus, FaMinus } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { IoIosDesktop } from "react-icons/io";
+import { addToSelectedCart } from "../../features/product/cartSlice";
+import OptimizedImage from "../../components/OptimizedImage/OptimizedImage";
+import { useImageCache } from "../../context/ImageCacheContext";
 
 const CartProduct = () => {
   const navigate = useNavigate();
@@ -24,8 +24,8 @@ const CartProduct = () => {
     const handleResize = () => {
       setIsDesktop(window.innerWidth > 920);
     };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const handleRemove = (id, size, color) => {
@@ -41,7 +41,7 @@ const CartProduct = () => {
   const totalPrice = cartItems.reduce(
     (acc, item) =>
       acc +
-      Number(item?.price.replace(/AED\s?|,/g, '')) * Number(item?.quantity),
+      Number(item?.price.replace(/AED\s?|,/g, "")) * Number(item?.quantity),
     0
   );
 
@@ -51,7 +51,7 @@ const CartProduct = () => {
 
     dispatch(addToSelectedCart(item));
 
-    navigate('/buy');
+    navigate("/buy");
     window.scrollTo(0, 0);
   };
 
@@ -62,7 +62,7 @@ const CartProduct = () => {
       dispatch(addToSelectedCart(item));
     });
 
-    navigate('/buy');
+    navigate("/buy");
     window.scrollTo(0, 0);
   };
 
@@ -73,7 +73,8 @@ const CartProduct = () => {
   const renderMobileCartItem = (item) => (
     <div
       key={`${item.id}-${item.size}-${item.color}-mobile`}
-      className={styles.mobileCartProduct}    >
+      className={styles.mobileCartProduct}
+    >
       <div className={styles.mobileImageContainer}>
         <OptimizedImage
           src={item.image}
@@ -92,8 +93,8 @@ const CartProduct = () => {
         >
           <img
             className={styles.removeButtonIcon}
-            src='/images/delete-icon.png'
-            alt='Remove'
+            src="/images/delete-icon.png"
+            alt="Remove"
           />
         </button>
       </div>
@@ -104,30 +105,37 @@ const CartProduct = () => {
         <div className={styles.mobileSpecRow}>
           <span>
             Color:
-            {item.displayColor && item.displayColor.startsWith('linear-gradient') ? (
-              <span style={{
-                display: 'inline-block',
-                width: '18px',
-                height: '18px',
-                marginLeft: '5px',
-                borderRadius: '50%',
-                background: item.displayColor,
-                border: '1px solid #ccc',
-                verticalAlign: 'middle',
-              }} title={item.color} />
+            {item.displayColor &&
+            item.displayColor.startsWith("linear-gradient") ? (
+              <span
+                style={{
+                  display: "inline-block",
+                  width: "18px",
+                  height: "18px",
+                  marginLeft: "5px",
+                  borderRadius: "50%",
+                  background: item.displayColor,
+                  border: "1px solid #ccc",
+                  verticalAlign: "middle",
+                }}
+                title={item.color}
+              />
             ) : item.displayColor ? (
-              <span style={{
-                display: 'inline-block',
-                width: '18px',
-                height: '18px',
-                marginLeft: '5px',
-                borderRadius: '50%',
-                backgroundColor: item.displayColor,
-                border: '1px solid #ccc',
-                verticalAlign: 'middle',
-              }} title={item.color} />
+              <span
+                style={{
+                  display: "inline-block",
+                  width: "18px",
+                  height: "18px",
+                  marginLeft: "5px",
+                  borderRadius: "50%",
+                  backgroundColor: item.displayColor,
+                  border: "1px solid #ccc",
+                  verticalAlign: "middle",
+                }}
+                title={item.color}
+              />
             ) : (
-              item.color || 'Blue'
+              item.color || "Blue"
             )}
           </span>
           <span>Size: {item.size}</span>
@@ -147,7 +155,7 @@ const CartProduct = () => {
                 )
               }
               disabled={item.quantity <= 1}
-              aria-label='Decrease quantity'
+              aria-label="Decrease quantity"
             >
               <FaMinus size={8} />
             </button>
@@ -162,7 +170,7 @@ const CartProduct = () => {
                   item.quantity + 1
                 )
               }
-              aria-label='Increase quantity'
+              aria-label="Increase quantity"
             >
               <FaPlus size={8} />
             </button>
@@ -175,9 +183,9 @@ const CartProduct = () => {
 
         <div className={styles.mobileTotalRow}>
           <span>
-            Total: AED{' '}
+            Total: AED{" "}
             {(
-              Number(item?.price.replace(/AED\s?|,/g, '')) *
+              Number(item?.price.replace(/AED\s?|,/g, "")) *
               Number(item?.quantity)
             ).toLocaleString()}
           </span>
@@ -200,11 +208,12 @@ const CartProduct = () => {
   const renderDesktopCartItem = (item) => (
     <div
       key={`${item.id}-${item.size}-${item.color}-desktop`}
-      className={styles.cartProduct}    >
+      className={styles.cartProduct}
+    >
       <div className={styles.imagePlaceholder}>
-        <OptimizedImage 
-          src={item.image} 
-          alt={item.name} 
+        <OptimizedImage
+          src={item.image}
+          alt={item.name}
           className={styles.productImage}
           lazy={true}
           quality="medium"
@@ -217,30 +226,37 @@ const CartProduct = () => {
           <div className={styles.productInfo}>
             <p>
               Color:
-              {item.displayColor && item.displayColor.startsWith('linear-gradient') ? (
-                <span style={{
-                  display: 'inline-block',
-                  width: '18px',
-                  height: '18px',
-                  marginLeft: '5px',
-                  borderRadius: '50%',
-                  background: item.displayColor,
-                  border: '1px solid #ccc',
-                  verticalAlign: 'middle',
-                }} title={item.color} />
+              {item.displayColor &&
+              item.displayColor.startsWith("linear-gradient") ? (
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "18px",
+                    height: "18px",
+                    marginLeft: "5px",
+                    borderRadius: "50%",
+                    background: item.displayColor,
+                    border: "1px solid #ccc",
+                    verticalAlign: "middle",
+                  }}
+                  title={item.color}
+                />
               ) : item.displayColor ? (
-                <span style={{
-                  display: 'inline-block',
-                  width: '18px',
-                  height: '18px',
-                  marginLeft: '5px',
-                  borderRadius: '50%',
-                  backgroundColor: item.displayColor,
-                  border: '1px solid #ccc',
-                  verticalAlign: 'middle',
-                }} title={item.color} />
+                <span
+                  style={{
+                    display: "inline-block",
+                    width: "18px",
+                    height: "18px",
+                    marginLeft: "5px",
+                    borderRadius: "50%",
+                    backgroundColor: item.displayColor,
+                    border: "1px solid #ccc",
+                    verticalAlign: "middle",
+                  }}
+                  title={item.color}
+                />
               ) : (
-                item.color || 'Blue'
+                item.color || "Blue"
               )}
             </p>
             <p>Size: {item.size}</p>
@@ -265,7 +281,7 @@ const CartProduct = () => {
                     )
                   }
                   disabled={item.quantity <= 1}
-                  aria-label='Decrease quantity'
+                  aria-label="Decrease quantity"
                 >
                   <FaMinus size={10} />
                 </button>
@@ -280,7 +296,7 @@ const CartProduct = () => {
                       item.quantity + 1
                     )
                   }
-                  aria-label='Increase quantity'
+                  aria-label="Increase quantity"
                 >
                   <FaPlus size={10} />
                 </button>
@@ -291,9 +307,9 @@ const CartProduct = () => {
           <div className={styles.totalDetails}>
             <p className={styles.totalLabel}>Total</p>
             <p className={styles.total}>
-              AED{' '}
+              AED{" "}
               {(
-                Number(item?.price.replace(/AED\s?|,/g, '')) *
+                Number(item?.price.replace(/AED\s?|,/g, "")) *
                 Number(item?.quantity)
               ).toLocaleString()}
             </p>
@@ -316,8 +332,8 @@ const CartProduct = () => {
       >
         <img
           className={styles.removeButtonIcon}
-          src='/images/delete-icon.png'
-          alt='Remove'
+          src="/images/delete-icon.png"
+          alt="Remove"
         />
       </button>
     </div>
@@ -346,7 +362,7 @@ const CartProduct = () => {
           <button
             className={styles.shopNowButton}
             onClick={() => {
-              navigate('/shop');
+              navigate("/shop");
               window.scrollTo(0, 0);
             }}
           >
@@ -355,43 +371,47 @@ const CartProduct = () => {
         </div>
       )}
 
-      <div className={styles.cartFooter}>
-        <div className={styles.cartTotal}>
-          <p>Subtotal</p>
-          {cartItems.length > 0 && <p>AED {totalPrice.toLocaleString()}</p>}
-        </div>
-        <div className={styles.cartCheckout}>
-          <button
-            className={styles.checkoutBtn}
-            onClick={() => handleCheckoutAll()}
-          >
-            Checkout All
-          </button>
+      {cartItems.length > 0 && (
+        <>
+          <div className={styles.cartFooter}>
+            <div className={styles.cartTotal}>
+              <p>Subtotal</p>
+              <p>AED {totalPrice.toLocaleString()}</p>
+            </div>
+            <div className={styles.cartCheckout}>
+              <button
+                className={styles.checkoutBtn}
+                onClick={() => handleCheckoutAll()}
+              >
+                Checkout All
+              </button>
 
-          <button
-            onClick={() => {
-              dispatch(clearCart());
-            }}
-            className={styles.delBtn}
-          >
-            Delete All
-          </button>
-        </div>
-      </div>
+              <button
+                onClick={() => {
+                  dispatch(clearCart());
+                }}
+                className={styles.delBtn}
+              >
+                Delete All
+              </button>
+            </div>
+          </div>
 
-      <hr className={styles.cartFooterDivider} />
+          <hr className={styles.cartFooterDivider} />
 
-      <div className={styles.cartCheckout}>
-        <button
-          onClick={() => {
-            navigate('/shop');
-            window.scrollTo(0, 0);
-          }}
-          className={styles.continueShopping}
-        >
-          Continue Shopping
-        </button>
-      </div>
+          <div className={styles.cartCheckout}>
+            <button
+              onClick={() => {
+                navigate("/shop");
+                window.scrollTo(0, 0);
+              }}
+              className={styles.continueShopping}
+            >
+              Continue Shopping
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 };

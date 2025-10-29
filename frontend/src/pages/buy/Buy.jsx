@@ -10,7 +10,10 @@ import StripePaymentForm from "../../components/checkout/StripePaymentForm";
 import { useAuth } from "../../context/AuthContext";
 import { createOrder } from "../../services/orderService";
 import { createPaymentIntent, getStripe } from "../../services/paymentService";
-import { clearCart } from "../../features/product/cartSlice";
+import {
+  clearCart,
+  clearFirebaseCartThunk,
+} from "../../features/product/cartSlice";
 import styles from "./css/Buy.module.css";
 import { toast } from "react-toastify";
 import { collection, getDocs } from "firebase/firestore";
@@ -58,12 +61,6 @@ const Buy = () => {
     loading = false,
   } = auth;
 
-  console.log("Buy Page - Auth State:....................", {
-    currentUser,
-    userData,
-    isAuthenticated,
-    loading,
-  });
   // Check if user is in guest mode
   const isGuestUser = localStorage.getItem("isGuestUser") === "true";
 
@@ -674,8 +671,19 @@ const Buy = () => {
       // Update metadata with orderId
       orderData.metadata.orderId = orderId;
 
-      // Clear cart
-      dispatch(clearCart());
+      // Clear cart properly based on user type
+      if (isGuestUser) {
+        // For guest users, clear local cart
+        dispatch(clearCart());
+        localStorage.removeItem("cartItems");
+      } else if (currentUser?.uid) {
+        // For authenticated users, clear Firebase cart
+        await dispatch(clearFirebaseCartThunk(currentUser.uid));
+        dispatch(clearCart());
+      } else {
+        // Fallback: clear local cart
+        dispatch(clearCart());
+      }
 
       // Clear guest user flag after successful order
       if (isGuestUser) {
@@ -784,8 +792,19 @@ const Buy = () => {
       // Update metadata with orderId
       orderData.metadata.orderId = orderId;
 
-      // Clear cart
-      dispatch(clearCart());
+      // Clear cart properly based on user type
+      if (isGuestUser) {
+        // For guest users, clear local cart
+        dispatch(clearCart());
+        localStorage.removeItem("cartItems");
+      } else if (currentUser?.uid) {
+        // For authenticated users, clear Firebase cart
+        await dispatch(clearFirebaseCartThunk(currentUser.uid));
+        dispatch(clearCart());
+      } else {
+        // Fallback: clear local cart
+        dispatch(clearCart());
+      }
 
       // Clear guest user flag after successful order
       if (isGuestUser) {
