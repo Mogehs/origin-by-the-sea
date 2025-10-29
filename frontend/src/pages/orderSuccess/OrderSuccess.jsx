@@ -30,12 +30,35 @@ const OrderSuccess = () => {
 
   const orderDetails = location.state?.orderDetails || {
     orderId: "Unknown",
-    total: 0,
+    totalAmount: 0,
+    subtotalAmount: 0,
+    vatAmount: 0,
     items: [],
     paymentMethod: "Unknown",
     paymentStatus: "pending",
     status: "processing",
+    metadata: {},
+    shipping: {},
   };
+
+  // Helper function to format amount from cents to AED
+  const formatAmount = (amountInCents) => {
+    if (!amountInCents && amountInCents !== 0) return "0.00";
+    return (amountInCents / 100).toFixed(2);
+  };
+
+  // Get the display total (use totalAmount if available, fallback to total)
+  const displayTotal = orderDetails.totalAmount
+    ? formatAmount(orderDetails.totalAmount)
+    : orderDetails.total?.toFixed(2) || "0.00";
+
+  const displaySubtotal = orderDetails.subtotalAmount
+    ? formatAmount(orderDetails.subtotalAmount)
+    : null;
+
+  const displayVAT = orderDetails.vatAmount
+    ? formatAmount(orderDetails.vatAmount)
+    : null;
 
   // Add console log to check order details
   useEffect(() => {
@@ -213,46 +236,92 @@ const OrderSuccess = () => {
             <FaShoppingBag />
             <div>
               <h4>Total</h4>
-              <p className={styles.totalAmount}>
-                AED {orderDetails.total.toFixed(2)}
-              </p>
+              <p className={styles.totalAmount}>AED {displayTotal}</p>
+              {displaySubtotal && displayVAT && (
+                <span className={styles.vatBreakdown}>
+                  (Subtotal: {displaySubtotal} + VAT: {displayVAT})
+                </span>
+              )}
             </div>
           </div>
         </div>
 
+        {/* Price Breakdown Section */}
+        {displaySubtotal && displayVAT && (
+          <div className={styles.priceBreakdown}>
+            <h3>Price Breakdown</h3>
+            <div className={styles.breakdownItem}>
+              <span>Subtotal</span>
+              <span>AED {displaySubtotal}</span>
+            </div>
+            <div className={styles.breakdownItem}>
+              <span>
+                VAT (
+                {orderDetails.vatPercentage ||
+                  orderDetails.metadata?.vatRate ||
+                  "5%"}
+                )
+              </span>
+              <span>AED {displayVAT}</span>
+            </div>
+            <div className={`${styles.breakdownItem} ${styles.breakdownTotal}`}>
+              <span>
+                <strong>Total Amount</strong>
+              </span>
+              <span>
+                <strong>AED {displayTotal}</strong>
+              </span>
+            </div>
+          </div>
+        )}
+
         <h3>Items Purchased</h3>
         <div className={styles.productsList}>
-          {orderDetails.items.map((item, index) => (
-            <div key={index} className={styles.product}>
-              <div
-                className={styles.productImage}
-                style={{ backgroundImage: `url(${item.image})` }}
-              ></div>
-              <div className={styles.productDetails}>
-                <p className={styles.productTitle}>{item.name}</p>
-                <div className={styles.productVariants}>
-                  {item.size && (
-                    <span className={styles.variantTag}>Size: {item.size}</span>
-                  )}
-                  {item.displayColor && (
-                    <span
-                      className={styles.colorDot}
-                      style={{
-                        background: item.displayColor,
-                      }}
-                      title={item.color}
-                    ></span>
-                  )}
-                  {item.quantity > 1 && (
-                    <span className={styles.quantityTag}>
-                      Qty: {item.quantity}
-                    </span>
-                  )}
+          {orderDetails.items.map((item, index) => {
+            // Extract price value from string if it's in format "AED 10"
+            const itemPrice =
+              typeof item.price === "string"
+                ? item.price
+                : `AED ${
+                    typeof item.price === "number"
+                      ? item.price.toFixed(2)
+                      : "0.00"
+                  }`;
+
+            return (
+              <div key={index} className={styles.product}>
+                <div
+                  className={styles.productImage}
+                  style={{ backgroundImage: `url(${item.image})` }}
+                ></div>
+                <div className={styles.productDetails}>
+                  <p className={styles.productTitle}>{item.name}</p>
+                  <div className={styles.productVariants}>
+                    {item.size && (
+                      <span className={styles.variantTag}>
+                        Size: {item.size}
+                      </span>
+                    )}
+                    {item.displayColor && (
+                      <span
+                        className={styles.colorDot}
+                        style={{
+                          background: item.displayColor,
+                        }}
+                        title={item.color || "Color"}
+                      ></span>
+                    )}
+                    {item.quantity > 1 && (
+                      <span className={styles.quantityTag}>
+                        Qty: {item.quantity}
+                      </span>
+                    )}
+                  </div>
+                  <p className={styles.productPrice}>{itemPrice}</p>
                 </div>
-                <p className={styles.productPrice}>AED {item.price}</p>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 

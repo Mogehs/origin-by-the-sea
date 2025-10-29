@@ -122,6 +122,22 @@ const Buy = () => {
     }, 0);
   }, [selectedCartItems]);
 
+  // Calculate VAT and totals
+  const calculateOrderAmounts = useCallback(() => {
+    const subtotal = calculateTotal();
+    const vatRate = 0.05; // 5% VAT for UAE
+    const vatAmount = subtotal * vatRate;
+    const totalAmount = subtotal + vatAmount;
+
+    return {
+      subtotalAmount: Math.round(subtotal * 100), // in cents
+      vatAmount: Math.round(vatAmount * 100), // in cents
+      totalAmount: Math.round(totalAmount * 100), // in cents
+      vatRate: "5%",
+      vatPercentage: "5%",
+    };
+  }, [calculateTotal]);
+
   // Fetch user's saved addresses (only for authenticated users)
   useEffect(() => {
     if (currentUser?.uid && isAuthenticated && !isGuestUser) {
@@ -234,15 +250,9 @@ const Buy = () => {
     }
 
     try {
-      const total = calculateTotal();
-      if (total <= 0) {
-        console.error("❌ Invalid order total:", total);
-        toast.error("Cannot process a zero or negative amount");
-        return;
-      }
+      const amounts = calculateOrderAmounts();
 
-      // Convert to smallest currency unit (cents)
-      const amountInSmallestUnit = Math.round(total * 100);
+      console.log("💰 Order amounts calculated:", amounts);
 
       // Create metadata for the payment
       const metadata = {
@@ -251,20 +261,16 @@ const Buy = () => {
         userEmail: isGuestUser
           ? formData.email || ""
           : currentUser?.email || formData.email || "",
-        total: total,
+        customerName: `${formData.firstName} ${formData.lastName}`,
+        phone: formData.phone || "",
+        address: `${formData.address}, ${formData.city}, ${formData.state}, ${formData.country}`,
+        subtotalAmount: amounts.subtotalAmount.toString(),
+        vatAmount: amounts.vatAmount.toString(),
+        vatRate: amounts.vatRate,
+        taxCompliant: "UAE_VAT_5_PERCENT",
+        taxRegistrationNumber: "104803456300003",
         paymentMethod: "card",
         isGuestCheckout: isGuestUser,
-        shippingAddress: {
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          address: formData.address,
-          apartment: formData.apartment,
-          city: formData.city,
-          state: formData.state,
-          zipCode: formData.zipCode,
-          country: formData.country,
-        },
-        items: selectedCartItems,
       };
 
       // Format shipping address for Stripe if we have address data
@@ -284,7 +290,7 @@ const Buy = () => {
         : null;
 
       console.log("🚀 Creating payment intent with:", {
-        amount: amountInSmallestUnit,
+        amount: amounts.totalAmount,
         currency: "aed",
         userId: isGuestUser ? "guest-user" : currentUser?.uid,
         email: isGuestUser
@@ -297,7 +303,7 @@ const Buy = () => {
 
       const { clientSecret, error, paymentIntentId, orderId } =
         await createPaymentIntent(
-          amountInSmallestUnit,
+          amounts.totalAmount,
           "aed",
           metadata,
           shipping
@@ -342,7 +348,13 @@ const Buy = () => {
       console.error("❌ Error creating payment intent:", err);
       toast.error("Payment initialization failed. Please try again.");
     }
-  }, [selectedCartItems, calculateTotal, isGuestUser, currentUser, formData]);
+  }, [
+    selectedCartItems,
+    calculateOrderAmounts,
+    isGuestUser,
+    currentUser,
+    formData,
+  ]);
 
   // Debug log when payment method changes
   useEffect(() => {
@@ -410,15 +422,9 @@ const Buy = () => {
             hasCurrentUser: !!currentUser?.uid,
           });
 
-          const total = calculateTotal();
-          if (total <= 0) {
-            console.error("Invalid order total:", total);
-            toast.error("Cannot process a zero or negative amount");
-            return;
-          }
+          const amounts = calculateOrderAmounts();
 
-          // Convert to smallest currency unit (cents)
-          const amountInSmallestUnit = Math.round(total * 100);
+          console.log("💰 Order amounts calculated:", amounts);
 
           // Create metadata for the payment (adjusted for guest users)
           const metadata = {
@@ -427,20 +433,16 @@ const Buy = () => {
             userEmail: isGuestUser
               ? formData.email || ""
               : currentUser.email || formData.email || "",
-            total: total,
+            customerName: `${formData.firstName} ${formData.lastName}`,
+            phone: formData.phone || "",
+            address: `${formData.address}, ${formData.city}, ${formData.state}, ${formData.country}`,
+            subtotalAmount: amounts.subtotalAmount.toString(),
+            vatAmount: amounts.vatAmount.toString(),
+            vatRate: amounts.vatRate,
+            taxCompliant: "UAE_VAT_5_PERCENT",
+            taxRegistrationNumber: "104803456300003",
             paymentMethod: paymentMethod,
             isGuestCheckout: isGuestUser,
-            shippingAddress: {
-              firstName: formData.firstName,
-              lastName: formData.lastName,
-              address: formData.address,
-              apartment: formData.apartment,
-              city: formData.city,
-              state: formData.state,
-              zipCode: formData.zipCode,
-              country: formData.country,
-            },
-            items: selectedCartItems,
           };
 
           // Format shipping address for Stripe if we have address data
@@ -460,7 +462,7 @@ const Buy = () => {
             : null;
 
           console.log("Creating payment intent with:", {
-            amount: amountInSmallestUnit,
+            amount: amounts.totalAmount,
             currency: "aed",
             userId: isGuestUser ? "guest-user" : currentUser.uid,
             email: isGuestUser
@@ -473,7 +475,7 @@ const Buy = () => {
 
           const { clientSecret, error, paymentIntentId, orderId } =
             await createPaymentIntent(
-              amountInSmallestUnit,
+              amounts.totalAmount,
               "aed",
               metadata,
               shipping
@@ -542,7 +544,7 @@ const Buy = () => {
     currentUser,
     formData,
     isGuestUser,
-    calculateTotal,
+    calculateOrderAmounts,
   ]);
 
   // Validate the form
@@ -592,41 +594,72 @@ const Buy = () => {
     try {
       setOrderProcessing(true);
 
+      const amounts = calculateOrderAmounts();
+
       // Create shipping address
       const shippingAddress = {
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        address: formData.address,
-        apartment: formData.apartment,
-        city: formData.city,
-        state: formData.state,
-        zipCode: formData.zipCode,
-        country: formData.country,
+        address: {
+          line1: formData.address,
+          line2: formData.apartment || "",
+          city: formData.city,
+          state: formData.state,
+          postal_code: formData.zipCode,
+          country: getCountryCode(formData.country),
+        },
+        name: `${formData.firstName} ${formData.lastName}`,
+        phone: formData.phone || "",
+        status: "pending",
+      };
+
+      // Prepare items array
+      const items = selectedCartItems.map((item) => ({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity,
+        size: item.size || "",
+        color: item.color || 0,
+        displayColor: item.displayColor || "#000000",
+        image: item.image || "",
+      }));
+
+      // Create metadata
+      const metadata = {
+        orderId: "", // Will be set after order creation
+        userId: isGuestUser ? "guest-user" : currentUser?.uid || "",
+        email: formData.email || "",
+        customerName: `${formData.firstName} ${formData.lastName}`,
+        phone: formData.phone || "",
+        address: `${formData.address}, ${formData.city}, ${formData.state}, ${formData.country}`,
+        subtotalAmount: amounts.subtotalAmount.toString(),
+        vatAmount: amounts.vatAmount.toString(),
+        vatRate: amounts.vatRate,
+        taxCompliant: "UAE_VAT_5_PERCENT",
+        taxRegistrationNumber: "104803456300003",
+        paymentMethod: "cod",
       };
 
       // Create order data (adjusted for guest users)
       const orderData = {
         userId: isGuestUser ? "guest-user" : currentUser?.uid || "",
         userEmail: formData.email || "",
-        items:
-          selectedCartItems && selectedCartItems.length > 0
-            ? selectedCartItems.map((item) => ({
-                id: item.id,
-                name: item.name,
-                price: parseFloat(item.price.replace(/[^0-9.]/g, "")),
-                quantity: item.quantity,
-                size: item.size,
-                color: item.color,
-                image: item.image,
-              }))
-            : [],
-        shippingAddress,
+        items,
+        shipping: shippingAddress,
+        metadata,
+        currency: "aed",
         paymentMethod: "cod",
         paymentStatus: "pending",
-        status: "processing",
-        total: calculateTotal(),
+        status: "pending",
+        subtotalAmount: amounts.subtotalAmount,
+        vatAmount: amounts.vatAmount,
+        totalAmount: amounts.totalAmount,
+        vatPercentage: amounts.vatPercentage,
+        vatRate: 0.05,
+        taxRegistrationNumber: "104803456300003",
         notes: formData.orderNotes || "",
         isGuestOrder: isGuestUser,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
       // Create order in database
@@ -637,6 +670,9 @@ const Buy = () => {
         setOrderProcessing(false);
         return;
       }
+
+      // Update metadata with orderId
+      orderData.metadata.orderId = orderId;
 
       // Clear cart
       dispatch(clearCart());
@@ -652,7 +688,6 @@ const Buy = () => {
           orderDetails: {
             orderId,
             ...orderData,
-            createdAt: new Date(),
           },
         },
       });
@@ -666,42 +701,73 @@ const Buy = () => {
   // Handle successful payment with Stripe (with guest support)
   const handlePaymentSuccess = async (paymentIntent) => {
     try {
+      const amounts = calculateOrderAmounts();
+
       // Create shipping address
       const shippingAddress = {
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        address: formData.address,
-        apartment: formData.apartment,
-        city: formData.city,
-        state: formData.state,
-        zipCode: formData.zipCode,
-        country: formData.country,
+        address: {
+          line1: formData.address,
+          line2: formData.apartment || "",
+          city: formData.city,
+          state: formData.state,
+          postal_code: formData.zipCode,
+          country: getCountryCode(formData.country),
+        },
+        name: `${formData.firstName} ${formData.lastName}`,
+        phone: formData.phone || "",
+        status: "paid",
+      };
+
+      // Prepare items array
+      const items = selectedCartItems.map((item) => ({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity,
+        size: item.size || "",
+        color: item.color || 0,
+        displayColor: item.displayColor || "#000000",
+        image: item.image || "",
+      }));
+
+      // Create metadata
+      const metadata = {
+        orderId: "", // Will be set after order creation
+        userId: isGuestUser ? "guest-user" : currentUser?.uid || "",
+        email: formData.email || "",
+        customerName: `${formData.firstName} ${formData.lastName}`,
+        phone: formData.phone || "",
+        address: `${formData.address}, ${formData.city}, ${formData.state}, ${formData.country}`,
+        subtotalAmount: amounts.subtotalAmount.toString(),
+        vatAmount: amounts.vatAmount.toString(),
+        vatRate: amounts.vatRate,
+        taxCompliant: "UAE_VAT_5_PERCENT",
+        taxRegistrationNumber: "104803456300003",
       };
 
       // Create order data (adjusted for guest users)
       const orderData = {
         userId: isGuestUser ? "guest-user" : currentUser?.uid || "",
         userEmail: formData.email || "",
-        items:
-          selectedCartItems && selectedCartItems.length > 0
-            ? selectedCartItems.map((item) => ({
-                id: item.id,
-                name: item.name,
-                price: parseFloat(item.price.replace(/[^0-9.]/g, "")),
-                quantity: item.quantity,
-                size: item.size,
-                color: item.color,
-                image: item.image,
-              }))
-            : [],
-        shippingAddress,
+        items,
+        shipping: shippingAddress,
+        metadata,
+        currency: "aed",
         paymentMethod: "card",
         paymentStatus: "paid",
         paymentIntentId: paymentIntent.id,
-        status: "processing",
-        total: calculateTotal(),
+        paymentData: paymentIntent, // Store full payment intent data
+        status: "paid",
+        subtotalAmount: amounts.subtotalAmount,
+        vatAmount: amounts.vatAmount,
+        totalAmount: amounts.totalAmount,
+        vatPercentage: amounts.vatPercentage,
+        vatRate: 0.05,
+        taxRegistrationNumber: "104803456300003",
         notes: formData.orderNotes || "",
         isGuestOrder: isGuestUser,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
       // Create order in database
@@ -714,6 +780,9 @@ const Buy = () => {
         setOrderProcessing(false);
         return;
       }
+
+      // Update metadata with orderId
+      orderData.metadata.orderId = orderId;
 
       // Clear cart
       dispatch(clearCart());
@@ -729,7 +798,6 @@ const Buy = () => {
           orderDetails: {
             orderId,
             ...orderData,
-            createdAt: new Date(),
           },
         },
       });
@@ -936,10 +1004,12 @@ const Buy = () => {
               shouldShowStripeForm,
             });
 
+            const amounts = calculateOrderAmounts();
+
             return shouldShowStripeForm ? (
               <Elements stripe={stripePromise}>
                 <StripePaymentForm
-                  amount={calculateTotal() * 100} // in smallest currency unit
+                  amount={amounts.totalAmount} // in smallest currency unit (includes VAT)
                   clientSecret={clientSecret}
                   billingDetails={{
                     name: `${formData.firstName} ${formData.lastName}`,
