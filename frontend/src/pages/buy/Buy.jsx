@@ -251,6 +251,18 @@ const Buy = () => {
 
       console.log("💰 Order amounts calculated:", amounts);
 
+      // Prepare items array for the order
+      const items = selectedCartItems.map((item) => ({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity,
+        size: item.size || "",
+        color: item.color || 0,
+        displayColor: item.displayColor || "#000000",
+        image: item.image || "",
+      }));
+
       // Create metadata for the payment
       const metadata = {
         cartItemCount: selectedCartItems.length,
@@ -268,6 +280,7 @@ const Buy = () => {
         taxRegistrationNumber: "104803456300003",
         paymentMethod: "card",
         isGuestCheckout: isGuestUser,
+        items, // Include items in metadata
       };
 
       // Format shipping address for Stripe if we have address data
@@ -353,20 +366,8 @@ const Buy = () => {
     formData,
   ]);
 
-  // Debug log when payment method changes
-  useEffect(() => {
-    console.log("🔄 Payment method changed to:", paymentMethod);
-
-    // If card payment is selected, immediately try to create payment intent
-    if (paymentMethod === "card") {
-      console.log(
-        "💳 Card payment selected - triggering payment intent creation"
-      );
-      createPaymentIntentImmediately();
-    }
-  }, [paymentMethod, createPaymentIntentImmediately]);
-
-  // Create a payment intent when using card payment (modified for guest users)
+  // Create a payment intent when card payment method is selected
+  // This useEffect handles payment intent creation with proper authentication checks
   useEffect(() => {
     console.log("🔍 Payment Intent useEffect triggered:", {
       paymentMethod,
@@ -405,143 +406,19 @@ const Buy = () => {
         return;
       }
 
-      // Proceed with payment intent creation for both authenticated and guest users
+      // Proceed with payment intent creation (call the function we defined earlier)
       console.log(
         "✅ Authentication check passed, proceeding with payment intent creation"
       );
-      const getPaymentIntent = async () => {
-        try {
-          console.log("🚀 Starting payment intent creation...", {
-            paymentMethod,
-            cartItemsCount: selectedCartItems.length,
-            isAuthenticated,
-            isGuestUser,
-            hasCurrentUser: !!currentUser?.uid,
-          });
-
-          const amounts = calculateOrderAmounts();
-
-          console.log("💰 Order amounts calculated:", amounts);
-
-          // Create metadata for the payment (adjusted for guest users)
-          const metadata = {
-            cartItemCount: selectedCartItems.length,
-            userId: isGuestUser ? "guest-user" : currentUser.uid,
-            userEmail: isGuestUser
-              ? formData.email || ""
-              : currentUser.email || formData.email || "",
-            customerName: `${formData.firstName} ${formData.lastName}`,
-            phone: formData.phone || "",
-            address: `${formData.address}, ${formData.city}, ${formData.state}, ${formData.country}`,
-            subtotalAmount: amounts.subtotalAmount.toString(),
-            vatAmount: amounts.vatAmount.toString(),
-            vatRate: amounts.vatRate,
-            taxCompliant: "UAE_VAT_5_PERCENT",
-            taxRegistrationNumber: "104803456300003",
-            paymentMethod: paymentMethod,
-            isGuestCheckout: isGuestUser,
-          };
-
-          // Format shipping address for Stripe if we have address data
-          const shipping = formData.address
-            ? {
-                name: `${formData.firstName} ${formData.lastName}`,
-                address: {
-                  line1: formData.address,
-                  line2: formData.apartment || "",
-                  city: formData.city || "",
-                  state: formData.state || "",
-                  postal_code: formData.zipCode || "",
-                  country: getCountryCode(formData.country),
-                },
-                phone: formData.phone || "",
-              }
-            : null;
-
-          console.log("Creating payment intent with:", {
-            amount: amounts.totalAmount,
-            currency: "aed",
-            userId: isGuestUser ? "guest-user" : currentUser.uid,
-            email: isGuestUser
-              ? formData.email
-              : currentUser.email || formData.email,
-            cartItemCount: selectedCartItems.length,
-            hasShippingData: !!shipping,
-            isGuestCheckout: isGuestUser,
-          });
-
-          const { clientSecret, error, paymentIntentId, orderId } =
-            await createPaymentIntent(
-              amounts.totalAmount,
-              "aed",
-              metadata,
-              shipping
-            );
-
-          console.log("Payment intent response:", {
-            hasClientSecret: !!clientSecret,
-            hasError: !!error,
-            paymentIntentId,
-            orderId,
-          });
-
-          if (error) {
-            console.error("Payment intent creation failed:", error);
-            // Handle common error cases
-            if (
-              error.includes("UNAUTHENTICATED") ||
-              error.includes("authentication")
-            ) {
-              toast.error("Authentication failed. Please log in again.");
-              setShowAuthModal(true);
-              // No redirection here, keep user on the page
-            } else {
-              toast.error("Could not initialize payment. Please try again.");
-              console.error("Payment intent error:", error);
-            }
-          } else if (clientSecret) {
-            console.log("Payment intent created successfully");
-            setClientSecret(clientSecret);
-            // Store payment intent ID in local session to reference it later if needed
-            sessionStorage.setItem("currentPaymentIntentId", paymentIntentId);
-            if (orderId) {
-              sessionStorage.setItem("pendingOrderId", orderId);
-            }
-          } else {
-            console.error(
-              "No client secret received from payment intent creation"
-            );
-            toast.error("Payment initialization failed. Please try again.");
-          }
-        } catch (err) {
-          console.error("Error creating payment intent:", err);
-
-          // Handle authentication errors (not applicable for guest users)
-          if (
-            !isGuestUser &&
-            (err.message?.includes("User not authenticated") ||
-              err.message?.includes("UNAUTHENTICATED") ||
-              err.message?.includes("auth"))
-          ) {
-            toast.error("Authentication error. Please log in again.");
-            setShowAuthModal(true);
-            // No redirection here, keep user on the page
-          } else {
-            toast.error("Payment initialization failed. Please try again.");
-          }
-        }
-      };
-
-      getPaymentIntent();
+      createPaymentIntentImmediately();
     }
   }, [
     paymentMethod,
     selectedCartItems,
     isAuthenticated,
     currentUser,
-    formData,
     isGuestUser,
-    calculateOrderAmounts,
+    createPaymentIntentImmediately,
   ]);
 
   // Validate the form
@@ -709,6 +586,28 @@ const Buy = () => {
   // Handle successful payment with Stripe (with guest support)
   const handlePaymentSuccess = async (paymentIntent) => {
     try {
+      console.log(
+        "✅ Payment successful, processing order...",
+        paymentIntent.id
+      );
+
+      // Get the order ID that was created when the payment intent was created
+      const pendingOrderId = sessionStorage.getItem("pendingOrderId");
+
+      if (!pendingOrderId) {
+        console.error("❌ No pending order ID found after successful payment");
+        toast.error(
+          "Your payment was successful, but we couldn't find your order. Please contact support."
+        );
+        return;
+      }
+
+      console.log("📦 Using existing order:", pendingOrderId);
+
+      // The order was already created by the backend when payment intent was created
+      // The webhook will update the order status to 'paid' automatically
+      // We just need to retrieve the order and clear the cart
+
       const amounts = calculateOrderAmounts();
 
       // Create shipping address
@@ -740,7 +639,7 @@ const Buy = () => {
 
       // Create metadata
       const metadata = {
-        orderId: "", // Will be set after order creation
+        orderId: pendingOrderId,
         userId: isGuestUser ? "guest-user" : currentUser?.uid || "",
         email: formData.email || "",
         customerName: `${formData.firstName} ${formData.lastName}`,
@@ -753,8 +652,9 @@ const Buy = () => {
         taxRegistrationNumber: "104803456300003",
       };
 
-      // Create order data (adjusted for guest users)
+      // Prepare complete order data for the success page (matching original structure)
       const orderData = {
+        orderId: pendingOrderId,
         userId: isGuestUser ? "guest-user" : currentUser?.uid || "",
         userEmail: formData.email || "",
         items,
@@ -778,19 +678,9 @@ const Buy = () => {
         updatedAt: new Date(),
       };
 
-      // Create order in database
-      const { orderId, error } = await createOrder(orderData);
-
-      if (error) {
-        toast.error(
-          "Your payment was successful, but we could not create your order. Our team will contact you."
-        );
-        setOrderProcessing(false);
-        return;
-      }
-
-      // Update metadata with orderId
-      orderData.metadata.orderId = orderId;
+      // Clear the pending order ID from session storage
+      sessionStorage.removeItem("pendingOrderId");
+      sessionStorage.removeItem("currentPaymentIntentId");
 
       // Clear cart properly based on user type
       if (isGuestUser) {
@@ -814,10 +704,7 @@ const Buy = () => {
       // Navigate to success page
       navigate("/order-success", {
         state: {
-          orderDetails: {
-            orderId,
-            ...orderData,
-          },
+          orderDetails: orderData,
         },
       });
     } catch (error) {
