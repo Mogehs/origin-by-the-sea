@@ -24,18 +24,20 @@ const app = express();
 // Request logging
 app.use(requestLogger);
 
-// Body parser middleware (skip for webhook routes)
+// CORS configuration - MUST be before body parser
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
+
+// Body parser middleware (raw body for Stripe webhook, JSON for everything else)
 app.use((req, res, next) => {
   if (req.originalUrl === "/api/payment/webhook") {
-    next();
+    // Stripe needs raw body for signature verification
+    bodyParser.raw({ type: "application/json" })(req, res, next);
   } else {
+    // Parse JSON for all other routes
     bodyParser.json()(req, res, next);
   }
 });
-
-// CORS configuration
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
 
 // Health and debug routes
 app.use("/", healthRoutes);

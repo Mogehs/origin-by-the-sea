@@ -44,8 +44,27 @@ class PaymentController {
         },
       });
 
-      // Update metadata with orderId
-      enhancedMetadata.orderId = orderId;
+      Logger.info(
+        `✅ Order created with ID: ${orderId} for Payment Intent: ${paymentIntent.id}`
+      );
+
+      // Update the payment intent metadata with the orderId so webhook can access it
+      try {
+        await stripe.paymentIntents.update(paymentIntent.id, {
+          metadata: {
+            ...enhancedMetadata,
+            orderId: orderId,
+          },
+        });
+        Logger.info(
+          `✅ Payment Intent ${paymentIntent.id} metadata updated with orderId: ${orderId}`
+        );
+      } catch (updateError) {
+        Logger.error(
+          `❌ Failed to update Payment Intent metadata:`,
+          updateError
+        );
+      }
 
       res.json({
         clientSecret: paymentIntent.client_secret,
@@ -131,7 +150,14 @@ class PaymentController {
    * POST /api/payment/webhook
    */
   async handleWebhook(req, res) {
+    Logger.info("🔔 Webhook received!");
+
     const sig = req.headers["stripe-signature"];
+
+    if (!sig) {
+      Logger.error("❌ No Stripe signature found in webhook request");
+      return res.status(400).send("No Stripe signature found");
+    }
 
     let event;
 
@@ -141,43 +167,84 @@ class PaymentController {
         sig,
         process.env.STRIPE_WEBHOOK_SECRET
       );
+      Logger.info(
+        `✅ Webhook signature verified. Event type: ${event.type}, Event ID: ${event.id}`
+      );
     } catch (err) {
-      Logger.error("Webhook signature verification failed:", err.message);
+      Logger.error("❌ Webhook signature verification failed:", err.message);
       return res.status(400).send(`Webhook Error: ${err.message}`);
     }
 
     try {
+      Logger.info(`🎯 Processing webhook event: ${event.type}`);
+
       switch (event.type) {
         case "payment_intent.succeeded":
           const paymentIntent = event.data.object;
-          await orderService.updateOrderStatus(
-            paymentIntent.metadata.orderId,
-            "paid",
-            paymentIntent
+          Logger.info(
+            `💳 Payment succeeded for Payment Intent: ${paymentIntent.id}`
           );
+          Logger.info(
+            `📦 Order ID from metadata: ${paymentIntent.metadata.orderId}`
+          );
+
+          if (!paymentIntent.metadata.orderId) {
+            Logger.error("❌ No orderId found in payment intent metadata!");
+            Logger.info(
+              "Payment Intent metadata:",
+              JSON.stringify(paymentIntent.metadata, null, 2)
+            );
+          } else {
+            Logger.info(
+              `🔄 Updating order ${paymentIntent.metadata.orderId} to 'paid' status...`
+            );
+            await orderService.updateOrderStatus(
+              paymentIntent.metadata.orderId,
+              "paid",
+              paymentIntent
+            );
+            Logger.info(
+              `✅ Order ${paymentIntent.metadata.orderId} successfully updated to 'paid'`
+            );
+          }
           break;
 
         case "payment_intent.payment_failed":
           const failedPayment = event.data.object;
-          await orderService.updateOrderStatus(
-            failedPayment.metadata.orderId,
-            "failed",
-            failedPayment
+          Logger.info(
+            `❌ Payment failed for Payment Intent: ${failedPayment.id}`
           );
+          Logger.info(
+            `📦 Order ID from metadata: ${failedPayment.metadata.orderId}`
+          );
+
+          if (failedPayment.metadata.orderId) {
+            await orderService.updateOrderStatus(
+              failedPayment.metadata.orderId,
+              "failed",
+              failedPayment
+            );
+            Logger.info(
+              `✅ Order ${failedPayment.metadata.orderId} marked as failed`
+            );
+          }
           break;
 
         case "charge.refunded":
           const refund = event.data.object;
+          Logger.info(`💰 Refund processed for charge: ${refund.id}`);
           await orderService.handleRefund(refund);
           break;
 
         default:
-          Logger.info(`Unhandled event type ${event.type}`);
+          Logger.info(`ℹ️ Unhandled event type ${event.type}`);
       }
 
+      Logger.info(`✅ Webhook ${event.type} processed successfully`);
       res.send({ received: true });
     } catch (error) {
-      Logger.error(`Error processing webhook ${event.type}:`, error);
+      Logger.error(`❌ Error processing webhook ${event.type}:`, error);
+      Logger.error("Error stack:", error.stack);
       res.status(500).send({ error: "Webhook processing failed" });
     }
   }

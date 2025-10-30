@@ -73,18 +73,31 @@ class OrderService {
    */
   async updateOrderStatus(orderId, status, paymentData = null) {
     try {
+      Logger.info(
+        `📝 updateOrderStatus called with orderId: ${orderId}, status: ${status}`
+      );
+
       if (!orderId) {
-        Logger.warn("No orderId provided, skipping order update");
+        Logger.warn("⚠️ No orderId provided, skipping order update");
         return;
       }
 
       const orderRef = db.collection("orders").doc(orderId);
+      Logger.info(`🔍 Fetching order ${orderId} from database...`);
+
       const orderSnapshot = await orderRef.get();
 
       if (!orderSnapshot.exists) {
-        Logger.warn(`Order ${orderId} not found in database`);
+        Logger.warn(`⚠️ Order ${orderId} not found in database`);
         return;
       }
+
+      Logger.info(
+        `✅ Order ${orderId} found. Current status: ${
+          orderSnapshot.data().status
+        }`
+      );
+      Logger.info(`🔄 Updating order ${orderId} to status: ${status}...`);
 
       await orderRef.update({
         paymentStatus: status,
@@ -92,14 +105,22 @@ class OrderService {
         paymentData: paymentData || null,
       });
 
+      Logger.info(`✅ Order ${orderId} successfully updated in Firestore`);
+
       // If payment succeeded, create payment record and clear cart
       if (status === "paid") {
+        Logger.info(
+          `💰 Payment succeeded, handling post-payment tasks for order ${orderId}...`
+        );
         await this._handleSuccessfulPayment(orderId, paymentData);
       }
 
-      Logger.info(`Updated order ${orderId} to status ${status}`);
+      Logger.info(
+        `🎉 Successfully updated order ${orderId} to status ${status}`
+      );
     } catch (error) {
-      Logger.error(`Error updating order ${orderId}:`, error);
+      Logger.error(`❌ Error updating order ${orderId}:`, error);
+      Logger.error("Error stack:", error.stack);
       throw error;
     }
   }

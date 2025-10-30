@@ -369,19 +369,6 @@ const Buy = () => {
   // Create a payment intent when card payment method is selected
   // This useEffect handles payment intent creation with proper authentication checks
   useEffect(() => {
-    console.log("🔍 Payment Intent useEffect triggered:", {
-      paymentMethod,
-      hasSelectedCartItems: !!selectedCartItems,
-      cartItemsLength: selectedCartItems?.length || 0,
-      isAuthenticated,
-      isGuestUser,
-      shouldCreatePaymentIntent:
-        paymentMethod === "card" &&
-        selectedCartItems &&
-        selectedCartItems.length > 0 &&
-        (isAuthenticated || isGuestUser),
-    });
-
     // Only proceed if card payment is selected and we have cart items
     if (
       paymentMethod === "card" &&

@@ -19,7 +19,6 @@ export const fetchReceipt = async (orderId) => {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include",
     });
 
     console.log("📡 Receipt API response status:", response.status);
