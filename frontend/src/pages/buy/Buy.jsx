@@ -79,6 +79,7 @@ const Buy = () => {
   const [stripePromise, setStripePromise] = useState(null);
   const [clientSecret, setClientSecret] = useState("");
   const [orderProcessing, setOrderProcessing] = useState(false);
+  const [paymentIntentLoading, setPaymentIntentLoading] = useState(false); // New state for payment intent loading
   const [formData, setFormData] = useState({
     firstName: userData?.firstName || "",
     lastName: userData?.lastName || "",
@@ -238,8 +239,12 @@ const Buy = () => {
   };
 
   // Function to create payment intent immediately when card is selected
+  // IMPORTANT: This ONLY creates a TEMPORARY order on the backend, NOT a permanent order
+  // The temp order will be converted to a permanent order ONLY after webhook confirms payment
   const createPaymentIntentImmediately = useCallback(async () => {
-    console.log("🎯 Creating payment intent immediately for card payment");
+    console.log(
+      "🎯 Creating payment intent for card payment (will create TEMP order only)"
+    );
 
     if (!selectedCartItems || selectedCartItems.length === 0) {
       console.log("❌ No cart items, cannot create payment intent");
@@ -247,6 +252,7 @@ const Buy = () => {
     }
 
     try {
+      setPaymentIntentLoading(true); // Start loading
       const amounts = calculateOrderAmounts();
 
       console.log("💰 Order amounts calculated:", amounts);
@@ -323,7 +329,7 @@ const Buy = () => {
         hasClientSecret: !!clientSecret,
         hasError: !!error,
         paymentIntentId,
-        orderId,
+        tempOrderId: orderId, // This is actually a tempOrderId from backend
         clientSecretPreview: clientSecret
           ? clientSecret.substring(0, 20) + "..."
           : "None",
@@ -332,31 +338,39 @@ const Buy = () => {
       if (error) {
         console.error("❌ Payment intent creation failed:", error);
         toast.error("Could not initialize payment. Please try again.");
+        setPaymentIntentLoading(false); // Stop loading on error
       } else if (clientSecret) {
-        console.log("✅ Payment intent created successfully");
+        console.log(
+          "✅ Payment intent and temporary order created successfully"
+        );
         console.log("🔍 Payment Intent Details:", {
           paymentIntentId,
-          orderId,
+          tempOrderId: orderId, // This is a temporary order, will be converted to permanent by webhook
           clientSecretLength: clientSecret.length,
           clientSecretStartsWith: clientSecret.startsWith("pi_") ? "Yes" : "No",
         });
         setClientSecret(clientSecret);
         sessionStorage.setItem("currentPaymentIntentId", paymentIntentId);
         if (orderId) {
+          // Store the temp order ID - webhook will convert this to permanent order
           sessionStorage.setItem("pendingOrderId", orderId);
+          console.log("💾 Stored temp order ID in session:", orderId);
         }
 
-        // Payment intent created successfully, no need for additional verification
-        console.log("✅ Payment intent ready for Stripe");
+        // Payment intent and temp order created successfully
+        console.log("✅ Payment intent ready for Stripe, temp order created");
+        setPaymentIntentLoading(false); // Stop loading on success
       } else {
         console.error(
           "❌ No client secret received from payment intent creation"
         );
         toast.error("Payment initialization failed. Please try again.");
+        setPaymentIntentLoading(false); // Stop loading on error
       }
     } catch (err) {
       console.error("❌ Error creating payment intent:", err);
       toast.error("Payment initialization failed. Please try again.");
+      setPaymentIntentLoading(false); // Stop loading on error
     }
   }, [
     selectedCartItems,
@@ -574,11 +588,12 @@ const Buy = () => {
   const handlePaymentSuccess = async (paymentIntent) => {
     try {
       console.log(
-        "✅ Payment successful, processing order...",
+        "✅ Payment successful, webhook will convert temp order to permanent...",
         paymentIntent.id
       );
 
-      // Get the order ID that was created when the payment intent was created
+      // Get the temp order ID that was created when the payment intent was created
+      // The webhook will convert this temp order to a permanent order with the same ID
       const pendingOrderId = sessionStorage.getItem("pendingOrderId");
 
       if (!pendingOrderId) {
@@ -589,11 +604,13 @@ const Buy = () => {
         return;
       }
 
-      console.log("📦 Using existing order:", pendingOrderId);
-
-      // The order was already created by the backend when payment intent was created
-      // The webhook will update the order status to 'paid' automatically
-      // We just need to retrieve the order and clear the cart
+      console.log(
+        "📦 Temp order ID (will become permanent order ID):",
+        pendingOrderId
+      );
+      console.log(
+        "🔔 Webhook will convert temp order to permanent order automatically"
+      );
 
       const amounts = calculateOrderAmounts();
 
@@ -609,7 +626,6 @@ const Buy = () => {
         },
         name: `${formData.firstName} ${formData.lastName}`,
         phone: formData.phone || "",
-        status: "paid",
       };
 
       // Prepare items array
@@ -640,8 +656,9 @@ const Buy = () => {
       };
 
       // Prepare complete order data for the success page (matching original structure)
+      // Note: The webhook will have already converted the temp order to permanent
       const orderData = {
-        orderId: pendingOrderId,
+        orderId: pendingOrderId, // This was a temp order, now converted to permanent by webhook
         userId: isGuestUser ? "guest-user" : currentUser?.uid || "",
         userEmail: formData.email || "",
         items,
@@ -649,10 +666,10 @@ const Buy = () => {
         metadata,
         currency: "aed",
         paymentMethod: "card",
-        paymentStatus: "paid",
+        paymentStatus: "paid", // Payment status - PAID (payment confirmed by webhook)
         paymentIntentId: paymentIntent.id,
         paymentData: paymentIntent, // Store full payment intent data
-        status: "paid",
+        status: "pending", // Order fulfillment status - PENDING (order needs to be processed/shipped)
         subtotalAmount: amounts.subtotalAmount,
         vatAmount: amounts.vatAmount,
         totalAmount: amounts.totalAmount,
@@ -663,11 +680,19 @@ const Buy = () => {
         isGuestOrder: isGuestUser,
         createdAt: new Date(),
         updatedAt: new Date(),
+        webhookProcessed: true, // Indicate this order was processed via webhook
       };
 
       // Clear the pending order ID from session storage
       sessionStorage.removeItem("pendingOrderId");
       sessionStorage.removeItem("currentPaymentIntentId");
+
+      console.log("📦 Order data prepared for success page:", {
+        orderId: orderData.orderId,
+        status: orderData.status,
+        paymentStatus: orderData.paymentStatus,
+        webhookProcessed: orderData.webhookProcessed,
+      });
 
       // Clear cart properly based on user type
       if (isGuestUser) {
@@ -890,15 +915,32 @@ const Buy = () => {
           {(() => {
             const shouldShowStripeForm =
               paymentMethod === "card" && stripePromise && clientSecret;
+            const shouldShowLoader =
+              paymentMethod === "card" && paymentIntentLoading;
+
             console.log("🎨 Stripe form render check:", {
               paymentMethod,
               hasStripePromise: !!stripePromise,
               hasClientSecret: !!clientSecret,
               shouldShowStripeForm,
+              shouldShowLoader,
             });
 
             const amounts = calculateOrderAmounts();
 
+            // Show shimmer loader while payment intent is being created
+            if (shouldShowLoader) {
+              return (
+                <div className={styles.paymentLoadingContainer}>
+                  <div className={styles.shimmerWrapper}>
+                    <div className={styles.shimmerTitle}></div>
+                    <div className={styles.shimmerInput}></div>
+                  </div>
+                </div>
+              );
+            }
+
+            // Show Stripe form when ready
             return shouldShowStripeForm ? (
               <Elements stripe={stripePromise}>
                 <StripePaymentForm

@@ -2,6 +2,7 @@ const paymentService = require("../services/paymentService");
 const orderService = require("../services/orderService");
 const stripe = require("../config/stripe");
 const Logger = require("../utils/logger");
+const { db } = require("../config/firebase");
 
 class PaymentController {
   /**
@@ -30,8 +31,8 @@ class PaymentController {
           cartItems,
         });
 
-      // Create order with metadata including orderId
-      const orderId = await orderService.createOrder({
+      // Create TEMPORARY order (will be converted to permanent after webhook confirmation)
+      const tempOrderId = await orderService.createTempOrder({
         userId,
         cartItems,
         vatBreakdown,
@@ -45,19 +46,19 @@ class PaymentController {
       });
 
       Logger.info(
-        `✅ Order created with ID: ${orderId} for Payment Intent: ${paymentIntent.id}`
+        `✅ Temporary order created with ID: ${tempOrderId} for Payment Intent: ${paymentIntent.id}`
       );
 
-      // Update the payment intent metadata with the orderId so webhook can access it
+      // Update the payment intent metadata with the tempOrderId so webhook can access it
       try {
         await stripe.paymentIntents.update(paymentIntent.id, {
           metadata: {
             ...enhancedMetadata,
-            orderId: orderId,
+            orderId: tempOrderId, // This is actually a tempOrderId, webhook will handle conversion
           },
         });
         Logger.info(
-          `✅ Payment Intent ${paymentIntent.id} metadata updated with orderId: ${orderId}`
+          `✅ Payment Intent ${paymentIntent.id} metadata updated with tempOrderId: ${tempOrderId}`
         );
       } catch (updateError) {
         Logger.error(
@@ -69,7 +70,7 @@ class PaymentController {
       res.json({
         clientSecret: paymentIntent.client_secret,
         paymentIntentId: paymentIntent.id,
-        orderId,
+        orderId: tempOrderId, // Return tempOrderId as orderId for frontend
       });
     } catch (error) {
       Logger.error("Error in createPaymentIntent:", error);
@@ -185,7 +186,7 @@ class PaymentController {
             `💳 Payment succeeded for Payment Intent: ${paymentIntent.id}`
           );
           Logger.info(
-            `📦 Order ID from metadata: ${paymentIntent.metadata.orderId}`
+            `📦 Temp Order ID from metadata: ${paymentIntent.metadata.orderId}`
           );
 
           if (!paymentIntent.metadata.orderId) {
@@ -196,15 +197,16 @@ class PaymentController {
             );
           } else {
             Logger.info(
-              `🔄 Updating order ${paymentIntent.metadata.orderId} to 'paid' status...`
+              `🔄 Converting temp order ${paymentIntent.metadata.orderId} to permanent order and updating to 'paid' status...`
             );
+            // This will convert temp order to permanent and update status
             await orderService.updateOrderStatus(
               paymentIntent.metadata.orderId,
               "paid",
               paymentIntent
             );
             Logger.info(
-              `✅ Order ${paymentIntent.metadata.orderId} successfully updated to 'paid'`
+              `✅ Temp order ${paymentIntent.metadata.orderId} successfully converted to permanent order with 'paid' status`
             );
           }
           break;
@@ -215,18 +217,33 @@ class PaymentController {
             `❌ Payment failed for Payment Intent: ${failedPayment.id}`
           );
           Logger.info(
-            `📦 Order ID from metadata: ${failedPayment.metadata.orderId}`
+            `📦 Temp Order ID from metadata: ${failedPayment.metadata.orderId}`
           );
 
           if (failedPayment.metadata.orderId) {
-            await orderService.updateOrderStatus(
-              failedPayment.metadata.orderId,
-              "failed",
-              failedPayment
-            );
-            Logger.info(
-              `✅ Order ${failedPayment.metadata.orderId} marked as failed`
-            );
+            // Delete the temp order since payment failed
+            try {
+              const tempOrderRef = db
+                .collection("tempOrders")
+                .doc(failedPayment.metadata.orderId);
+              const tempOrderDoc = await tempOrderRef.get();
+
+              if (tempOrderDoc.exists) {
+                await tempOrderRef.delete();
+                Logger.info(
+                  `✅ Temp order ${failedPayment.metadata.orderId} deleted after payment failure`
+                );
+              } else {
+                Logger.warn(
+                  `⚠️ Temp order ${failedPayment.metadata.orderId} not found, may have already been processed`
+                );
+              }
+            } catch (deleteError) {
+              Logger.error(
+                `❌ Error deleting temp order ${failedPayment.metadata.orderId}:`,
+                deleteError
+              );
+            }
           }
           break;
 

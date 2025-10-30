@@ -1114,3 +1114,83 @@
   color: #ef4444;
   border-color: #fecaca;
 }
+
+/* Payment Intent Loading Shimmer - Minimalistic & Elegant */
+.paymentLoadingContainer {
+  padding: 24px;
+  background-color: transparent;
+  margin-top: 16px;
+}
+
+.shimmerWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.shimmerTitle {
+  width: 35%;
+  height: 20px;
+  background: linear-gradient(90deg, #f3f4f6 25%, #f9fafb 50%, #f3f4f6 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+  border-radius: 4px;
+  margin-bottom: 4px;
+}
+
+.shimmerInput {
+  width: 100%;
+  height: 44px;
+  background: linear-gradient(90deg, #f3f4f6 25%, #f9fafb 50%, #f3f4f6 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+  border-radius: 5px;
+}
+
+.shimmerRow {
+  display: flex;
+  gap: 10px;
+}
+
+.shimmerInputHalf {
+  flex: 1;
+  height: 44px;
+  background: linear-gradient(90deg, #f3f4f6 25%, #f9fafb 50%, #f3f4f6 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+  border-radius: 5px;
+}
+
+.shimmerButton {
+  width: 100%;
+  height: 52px;
+  background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+  border-radius: 5px;
+  margin-top: 6px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Responsive for payment loading */
+@media (max-width: 768px) {
+  .paymentLoadingContainer {
+    padding: 16px;
+  }
+
+  .shimmerRow {
+    flex-direction: column;
+  }
+
+  .shimmerInputHalf {
+    width: 100%;
+  }
+}

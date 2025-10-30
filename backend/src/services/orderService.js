@@ -4,7 +4,57 @@ const Logger = require("../utils/logger");
 
 class OrderService {
   /**
-   * Create a new order in Firestore
+   * Create a temporary order in Firestore (for card payments)
+   * This order will be moved to permanent orders collection after payment success
+   */
+  async createTempOrder({
+    userId,
+    cartItems,
+    vatBreakdown,
+    currency,
+    paymentIntentId,
+    shipping,
+    metadata,
+  }) {
+    try {
+      const tempOrderRef = db.collection("tempOrders").doc();
+      const tempOrderId = tempOrderRef.id;
+
+      // Temp order structure should be EXACTLY the same as permanent order
+      const tempOrderData = {
+        userId,
+        items: cartItems || [],
+        totalAmount: vatBreakdown.totalAmount,
+        subtotalAmount: vatBreakdown.subtotalAmount,
+        vatAmount: vatBreakdown.vatAmount,
+        vatRate: vatBreakdown.vatRate,
+        vatPercentage: vatBreakdown.vatPercentage,
+        taxRegistrationNumber: UAE_TRN,
+        currency: currency || "aed",
+        status: "pending", // Order fulfillment status (pending, processing, shipped, delivered)
+        paymentStatus: "pending", // Payment status (pending, paid, failed, refunded)
+        paymentMethod: "card",
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        paymentIntentId,
+        shipping: shipping || null,
+        metadata,
+      };
+
+      await tempOrderRef.set(tempOrderData);
+
+      Logger.info(
+        `Temporary order created: ${tempOrderId} for Payment Intent: ${paymentIntentId}`
+      );
+      return tempOrderId;
+    } catch (error) {
+      Logger.error("Error creating temporary order:", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Create a new order in Firestore (for COD payments)
    */
   async createOrder({
     userId,
@@ -29,7 +79,9 @@ class OrderService {
         vatPercentage: vatBreakdown.vatPercentage,
         taxRegistrationNumber: UAE_TRN,
         currency: currency || "aed",
-        status: "pending",
+        status: "pending", // Order fulfillment status (pending, processing, shipped, delivered)
+        paymentStatus: "pending", // Payment status (pending, paid, failed, refunded) - for COD
+        paymentMethod: "cod",
         createdAt: admin.firestore.FieldValue.serverTimestamp(),
         updatedAt: admin.firestore.FieldValue.serverTimestamp(),
         paymentIntentId,
@@ -41,6 +93,60 @@ class OrderService {
       return orderId;
     } catch (error) {
       Logger.error("Error creating order:", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Convert temporary order to permanent order after successful payment
+   */
+  async convertTempOrderToPermanent(tempOrderId, paymentData) {
+    try {
+      Logger.info(
+        `🔄 Converting temp order ${tempOrderId} to permanent order...`
+      );
+
+      // Get the temporary order
+      const tempOrderRef = db.collection("tempOrders").doc(tempOrderId);
+      const tempOrderDoc = await tempOrderRef.get();
+
+      if (!tempOrderDoc.exists) {
+        Logger.error(`❌ Temporary order ${tempOrderId} not found`);
+        throw new Error(`Temporary order ${tempOrderId} not found`);
+      }
+
+      const tempOrderData = tempOrderDoc.data();
+      Logger.info(
+        `✅ Temporary order ${tempOrderId} found, creating permanent order...`
+      );
+
+      // Create permanent order with same ID
+      const orderRef = db.collection("orders").doc(tempOrderId);
+      await orderRef.set({
+        ...tempOrderData,
+        // Keep status as is (pending) - status is for order fulfillment (pending → processing → shipped → delivered)
+        // Only update paymentStatus - this is for payment tracking (pending → paid)
+        paymentStatus: "paid", // Update ONLY payment status to paid
+        paymentMethod: "card",
+        paymentData,
+        paymentConfirmedAt: admin.firestore.FieldValue.serverTimestamp(),
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
+
+      Logger.info(
+        `✅ Permanent order ${tempOrderId} created successfully with paymentStatus: paid, order status: ${tempOrderData.status}`
+      );
+
+      // Delete the temporary order
+      await tempOrderRef.delete();
+      Logger.info(`✅ Temporary order ${tempOrderId} deleted`);
+
+      return tempOrderId;
+    } catch (error) {
+      Logger.error(
+        `❌ Error converting temp order ${tempOrderId} to permanent:`,
+        error
+      );
       throw error;
     }
   }
@@ -70,6 +176,7 @@ class OrderService {
 
   /**
    * Update order status
+   * For card payments with status 'paid', it converts temp order to permanent
    */
   async updateOrderStatus(orderId, status, paymentData = null) {
     try {
@@ -82,6 +189,34 @@ class OrderService {
         return;
       }
 
+      // For successful payments, check if this is a temp order that needs conversion
+      if (status === "paid") {
+        Logger.info(
+          `💳 Payment succeeded for order ${orderId}, checking if it's a temp order...`
+        );
+
+        // Check if order exists in tempOrders collection
+        const tempOrderRef = db.collection("tempOrders").doc(orderId);
+        const tempOrderSnapshot = await tempOrderRef.get();
+
+        if (tempOrderSnapshot.exists) {
+          Logger.info(
+            `✅ Found temp order ${orderId}, converting to permanent order...`
+          );
+          await this.convertTempOrderToPermanent(orderId, paymentData);
+
+          // Handle post-payment tasks
+          Logger.info(`💰 Handling post-payment tasks for order ${orderId}...`);
+          await this._handleSuccessfulPayment(orderId, paymentData);
+
+          Logger.info(
+            `🎉 Successfully converted temp order ${orderId} to permanent and completed post-payment tasks`
+          );
+          return;
+        }
+      }
+
+      // For non-paid status or regular orders, update normally
       const orderRef = db.collection("orders").doc(orderId);
       Logger.info(`🔍 Fetching order ${orderId} from database...`);
 
@@ -106,14 +241,6 @@ class OrderService {
       });
 
       Logger.info(`✅ Order ${orderId} successfully updated in Firestore`);
-
-      // If payment succeeded, create payment record and clear cart
-      if (status === "paid") {
-        Logger.info(
-          `💰 Payment succeeded, handling post-payment tasks for order ${orderId}...`
-        );
-        await this._handleSuccessfulPayment(orderId, paymentData);
-      }
 
       Logger.info(
         `🎉 Successfully updated order ${orderId} to status ${status}`

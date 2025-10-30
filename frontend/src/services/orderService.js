@@ -38,14 +38,15 @@ const getAuthToken = async () => {
  */
 export const createOrder = async (orderData) => {
   try {
-    // For card payments, the order is already created by the backend when creating payment intent
-    // We should NOT create a duplicate order here
     if (orderData.paymentMethod === "card" && orderData.paymentIntentId) {
       const pendingOrderId = sessionStorage.getItem("pendingOrderId");
       if (pendingOrderId) {
         console.log(
-          "Using existing order created during payment intent:",
+          "⚠️ Card payment detected - temp order was created during payment intent:",
           pendingOrderId
+        );
+        console.log(
+          "🔔 Webhook will convert temp order to permanent order after payment success"
         );
         // Clear the pending order ID from session storage
         sessionStorage.removeItem("pendingOrderId");
@@ -55,7 +56,7 @@ export const createOrder = async (orderData) => {
       }
       // If no pending order ID, something went wrong - log it but continue
       console.warn(
-        "No pending order ID found for card payment, this should not happen"
+        "⚠️ No pending order ID found for card payment, this should not happen"
       );
     }
 
